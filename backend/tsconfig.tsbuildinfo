@@ -1,0 +1,1 @@
+{"root":["./index.ts","./config/db.ts","./controllers/city.ts","./middleware/errorhandler.ts","./models/city.ts","./routes/city.ts","./services/city.ts","./utils/logger.ts"],"version":"5.8.2"}
