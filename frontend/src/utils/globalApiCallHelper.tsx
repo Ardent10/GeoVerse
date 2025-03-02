@@ -7,14 +7,14 @@ type GlobalApiCallHelperProps = {
   headers?: Record<string, string>;
 };
 
-let baseURL = "";
+let baseURL = process.env.BASE_URL;
 
 if (process.env.NODE_ENV === "development") {
   // Use development base URL
   baseURL = "http://localhost:8000/api";
 } else {
   // Use production base URL
-  baseURL = "prodURL";
+  baseURL = process.env.BASE_URL;
 }
 
 export const globalApiCallHelper = async ({

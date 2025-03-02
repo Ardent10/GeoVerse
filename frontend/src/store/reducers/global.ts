@@ -14,7 +14,7 @@ const globalReducers = (state: State, action: Action) => {
     case "setUserProfile": {
       return {
         ...state,
-        userProfile: action.payload,
+        user: action.payload,
       };
     }
     case "setScore": {

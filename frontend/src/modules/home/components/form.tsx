@@ -1,33 +1,45 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "pixel-retroui";
-import { PixelButton } from "../../common/components/button";
+import { PixelButton } from "@modules/common/components/button";
+import { PixelBubble } from "@modules/common/components/bubble";
+import { guessForm } from "@utils/validations";
+import { z } from "zod";
 
-type FormValues = {
-  guess: string;
+type GuessFormProps = {
+  onSubmit: (data: z.infer<typeof guessForm>) => void;
 };
 
-interface GuessFormProps {
-  onSubmit: (data: FormValues) => void;
-}
-
 const GuessForm: React.FC<GuessFormProps> = ({ onSubmit }) => {
-  const { register, handleSubmit, reset } = useForm<FormValues>();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<z.infer<typeof guessForm>>({
+    resolver: zodResolver(guessForm),
+  });
 
-  const handleFormSubmit = (data: FormValues) => {
+  const handleFormSubmit = (data: z.infer<typeof guessForm>) => {
     onSubmit(data);
     reset();
   };
 
   return (
-    <div className="flex items-center gap-6">
-      <form onSubmit={handleSubmit(handleFormSubmit)}>
-        <Input className="p-2 rounded-md"
-          {...register("guess", { required: true })}
+    <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2">
+      {errors.guess && (
+        <PixelBubble text={errors.guess.message ?? ""} direction="left" />
+      )}
+
+      <form onSubmit={handleSubmit(handleFormSubmit)} className="flex gap-2">
+        <Input
+          {...register("guess")}
           type="text"
           placeholder="Enter city name"
+          className="rounded-md"
         />
-        <PixelButton className="py-2 px-4" type="submit" label="Guess" />
+        <PixelButton type="submit" label="Guess" />
       </form>
     </div>
   );

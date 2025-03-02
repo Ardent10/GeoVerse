@@ -3,7 +3,7 @@ const authSchema = z.object({
   username: z
     .string()
     .min(3, "Username must be at least 3 characters")
-    .optional(), // Only required for Sign Up
+    .optional(),
   email: z.string().email("Invalid email format").min(1, "Email is required"),
   password: z
     .string()
@@ -11,4 +11,11 @@ const authSchema = z.object({
     .max(20, "Password cannot exceed 20 characters"),
 });
 
-export { authSchema };
+const guessForm = z.object({
+  guess: z
+    .string()
+    .min(1, "City name is required") 
+    .min(3, "City name must be at least 3 characters"),
+});
+
+export { authSchema, guessForm };

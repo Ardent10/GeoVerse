@@ -1,5 +1,5 @@
 export const initialState = {
-  userProfile: null,
+  user: null,
   isLoading: false,
   guessedCities: null,
   score: 0,
