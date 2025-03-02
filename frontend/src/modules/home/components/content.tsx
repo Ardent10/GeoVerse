@@ -34,10 +34,27 @@ export function HeroContent() {
         >
           <Button
             borderColor="#ffff"
-            className="px-4 py-2 text-xl font-bold tracking-wide btn-hover bg-yellow-500 shadow-lg transition transform hover:scale-110 hover:bg-yellow-400"
+            className="px-4 py-2 text-md font-bold tracking-wide btn-hover bg-yellow-500 shadow-lg transition transform hover:scale-110 hover:bg-yellow-400"
             onClick={() => navigate("/game")}
           >
             ▶ Start Adventure
+          </Button>
+          <Button
+            borderColor="#ffff"
+            className="px-4 py-2 text-md font-bold tracking-wide btn-hover bg-yellow-500 shadow-lg transition transform hover:scale-110 hover:bg-yellow-400"
+            onClick={() =>
+              window.open("https://github.com/Ardent10/GeoVerse", "_blank")
+            }
+          >
+            <span className="flex items-center gap-2">
+              <img
+                src="assets/common/github.png"
+                alt="github"
+                height={20}
+                width={20}
+              />
+              Star on GitHub
+            </span>
           </Button>
         </motion.div>
       </div>

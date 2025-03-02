@@ -90,7 +90,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
               reset();
               setIsSignUp(!isSignUp);
             }}
-            className="text-blue-500 cursor-pointer ml-1 hover:underline"
+            className="text-blue-500 ml-1 hover:underline"
           >
             {isSignUp ? "Login" : "Sign Up"}
           </span>

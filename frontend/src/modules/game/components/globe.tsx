@@ -243,7 +243,7 @@ export function GameGlobe() {
   return (
     <div
       id="globe-container"
-      className="w-full h-[100vh] mt-[-5vh] cursor-grab overflow-hidden"
+      className="w-full h-[100vh] mt-[-5vh]  overflow-hidden"
     />
   );
 }

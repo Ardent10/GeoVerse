@@ -9,8 +9,10 @@ body {
   margin: 0;
   /* font-family: "Minecraft", "Roboto", sans-serif; */
   font-family: "Kemco pixel", sans-serif;
+  text-transform: none;
   background-color: #f5f5f5;
-  cursor: url("/cursor.png"), auto;
+  cursor: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABFklEQVRYR9WXURLDIAhE6/0PbSdOtUpcd1Gnpv1KGpTHBpCE1/cXq+vrMph7dGvXZTtpfW10DCA5jrH1H0Jhs5E0hnZdCR+vb5S8Nn8mQCeS9BdSalYJqMBjAGzq59xAESN7VFVUgV8AZB/dZBR7QTFDCqGquvUBVVoEtgIwpQRzmANSFHgWQKExHdIrPeuMvQNDarXe6nC/AutgV3JW+6bgqQLeV8FekRtgV+ToDKEKnACYKsfZjjkam7a0ZpYTytwmgainpC3HvwBocgKOxqRjehoR9DFKNFYtOwCGYCszobeCbl26N6yyQ6g8X/Wex/rBPsNEV6qAMaJPMynIHQCoSqS9JSMmwef51LflTgCRszU7DvAGiV6mHWfsaVUAAAAASUVORK5CYII="),
+    auto;
 }
 
 @layer components {
@@ -21,7 +23,6 @@ body {
 
 .heading {
   text-shadow: 0 8px 0 #28248c;
-  margin-bottom: 24px;
   font-size: 80px;
   line-height: 80px;
 }
