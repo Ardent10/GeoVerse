@@ -3,19 +3,22 @@ import { Button } from "pixel-retroui";
 
 interface ButtonProps {
   label: string;
-  onClick: () => void;
+  onClick?: () => void;
   color?: string;
+  type?: "button" | "submit";
+  className?:string
 }
 
 export const PixelButton: React.FC<ButtonProps> = ({
   label,
   onClick,
   color = "blue",
+  type,
+  className
 }) => {
   return (
-    <Button color={color} onClick={onClick}>
+    <Button className={className} type={type} color={color} onClick={onClick}>
       {label}
     </Button>
   );
 };
-
