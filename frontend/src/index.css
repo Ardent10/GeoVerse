@@ -7,14 +7,21 @@
 html,
 body {
   margin: 0;
-  font-family: "Minecraft", "Roboto", sans-serif;
+  /* font-family: "Minecraft", "Roboto", sans-serif; */
+  font-family: "Kemco pixel", sans-serif;
   background-color: #f5f5f5;
   cursor: url("/cursor.png"), auto;
 }
-
 
 @layer components {
   .btn-hover {
     @apply hover:bg-cyan-400 hover:text-white transition duration-200;
   }
+}
+
+.heading {
+  text-shadow: 0 8px 0 #28248c;
+  margin-bottom: 24px;
+  font-size: 80px;
+  line-height: 80px;
 }

@@ -63,7 +63,7 @@ export const useAuth = () => {
   // Function to handle logout
   const logout = () => {
     localStorage.removeItem("token");
-    dispatch({ type: "logout", payload: {} });
+    dispatch({ type: "logout", payload: {} }); // Reset global state
   };
 
   // Load user session on initial mount
