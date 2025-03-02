@@ -29,7 +29,12 @@ const GuessForm: React.FC<GuessFormProps> = ({ onSubmit }) => {
   return (
     <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2">
       {errors.guess && (
-        <PixelBubble text={errors.guess.message ?? ""} direction="left" />
+        <PixelBubble
+          text={errors.guess.message ?? ""}
+          direction="left"
+          className="text-red-500 "
+          borderColor="#ef4444"
+        />
       )}
 
       <form onSubmit={handleSubmit(handleFormSubmit)} className="flex gap-2">
@@ -39,7 +44,7 @@ const GuessForm: React.FC<GuessFormProps> = ({ onSubmit }) => {
           placeholder="Enter city name"
           className="rounded-md"
         />
-        <PixelButton type="submit" label="Guess" />
+        <PixelButton type="submit" label="Guess" className="btn-hover"/>
       </form>
     </div>
   );

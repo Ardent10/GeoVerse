@@ -10,7 +10,9 @@ export function Home() {
   console.log("STATE=>", state);
   const handleGuess = (data: { guess: string }) => {
     const cityData = cities.find(
-      (city) => city.city.toLowerCase() === data.guess.toLowerCase()
+      (city) =>
+        city.city.toLowerCase() === data.guess.toLowerCase() ||
+        city.country.toLowerCase() === data.guess.toLocaleLowerCase()
     );
 
     if (cityData) {

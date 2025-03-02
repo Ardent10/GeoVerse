@@ -15,6 +15,6 @@ body {
 
 @layer components {
   .btn-hover {
-    @apply hover:bg-cyan-600 hover:text-white transition duration-200;
+    @apply hover:bg-cyan-400 hover:text-white transition duration-200;
   }
 }
