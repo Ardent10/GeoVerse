@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "outDir": "build",
-    "rootDir": "./",
+    "rootDir": "./src",
     "module": "CommonJS",
     "target": "ES6",
     "strict": true,
@@ -9,6 +9,6 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["*.ts"],
+  "include": ["*.ts", "src/**/*"],
   "exclude": ["node_modules", "build"]
 }

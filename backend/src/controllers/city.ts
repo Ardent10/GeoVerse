@@ -14,7 +14,6 @@ async function fetchRandomCity(req: Request, res: Response) {
   res.json(await getRandomCity());
 }
 
-// Handle quiz answer submission
 async function submitAnswer(req: Request, res: Response): Promise<any> {
   try {
     const { city, answer } = req.body;

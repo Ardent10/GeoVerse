@@ -1,29 +1,14 @@
 import mongoose, { Document, Schema } from "mongoose";
 
 export interface IUser extends Document {
-  firstName: string;
-  lastName: string;
   username: string;
   email: string;
-  location: string;
   password: string;
-  role: "user" | "admin";
+  score: number;
 }
 
 const UserSchema: Schema<IUser> = new mongoose.Schema(
   {
-    firstName: {
-      type: String,
-      required: true,
-      min: 3,
-      max: 20,
-    },
-    lastName: {
-      type: String,
-      required: true,
-      min: 3,
-      max: 20,
-    },
     username: {
       type: String,
       required: true,
@@ -34,9 +19,9 @@ const UserSchema: Schema<IUser> = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    location: {
-      type: String,
-      required: true,
+    score: {
+      type: Number,
+      required: false,
     },
     password: {
       type: String,

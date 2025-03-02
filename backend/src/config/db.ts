@@ -1,8 +1,10 @@
 import mongoose, { Connection, Mongoose } from "mongoose";
 import { logger } from "../utils/logger";
+import dotenv from "dotenv";
 
-const URI = process.env.MONGODB_URI || ""; // Replace with your MongoDB connection string
-const DbName = process.env.Db_Name; // Replace with your database name
+dotenv.config();
+const URI = process.env.MONGODB_URI || "";
+const DbName = process.env.Db_Name;
 
 let cachedDb: Connection | null = null;
 
