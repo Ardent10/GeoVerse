@@ -1,11 +1,18 @@
+import { AuthModal } from "@modules/common/components/authPopup";
+import { useAppState } from "@store/index";
 import { motion } from "framer-motion";
 import { Button } from "pixel-retroui";
+import { useState } from "react";
 import { useNavigate } from "react-router";
 
 export function HeroContent() {
+  const [isAuthOpen, setIsAuthOpen] = useState(false);
+  const [state] = useAppState();
   const navigate = useNavigate();
+
   return (
     <div className="w-full flex justify-center -mt-28 h-full">
+      <AuthModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
       <div className="relative flex flex-col items-center w-2/3 justify-center h-full text-white text-center">
         <motion.h1
           initial={{ opacity: 0, y: -20 }}
@@ -35,7 +42,9 @@ export function HeroContent() {
           <Button
             borderColor="#ffff"
             className="px-4 py-2 text-md font-bold tracking-wide btn-hover bg-yellow-500 shadow-lg transition transform hover:scale-110 hover:bg-yellow-400"
-            onClick={() => navigate("/game")}
+            onClick={() => {
+              !state?.user ? setIsAuthOpen(true) : navigate("/game");
+            }}
           >
             ▶ Start Adventure
           </Button>

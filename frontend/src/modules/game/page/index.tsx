@@ -7,7 +7,7 @@ import { Layout } from "../../common/components/layout";
 
 export function Game() {
   const [state, dispatch] = useAppState();
-  console.log("STATE=>", state);
+
   const handleGuess = (data: { guess: string }) => {
     const cityData = cities.find(
       (city) =>

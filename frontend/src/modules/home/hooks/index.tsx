@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAppState } from "@store/index";
+import { globalApiCallHelper } from "@utils/globalApiCallHelper";
 
 export const useAuth = () => {
   const [state, dispatch] = useAppState();
@@ -7,18 +8,23 @@ export const useAuth = () => {
   const [error, setError] = useState<string | null>(null);
 
   // Function to handle login
-  const login = async (email: string, password: string) => {
+  const login = async ({
+    email,
+    password,
+  }: {
+    email: string;
+    password: string;
+  }) => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch("/api/auth/login", {
+      const data = await globalApiCallHelper({
+        api: "/auth/login",
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
-      const data = await response.json();
 
-      if (!response.ok) throw new Error(data.message || "Login failed");
+      if (!data || data.error) throw new Error(data?.message || "Login failed");
 
       localStorage.setItem("token", data.token);
       dispatch({ type: "setUserProfile", payload: data.user });
@@ -30,18 +36,26 @@ export const useAuth = () => {
   };
 
   // Function to handle signup
-  const signup = async (name: string, email: string, password: string) => {
+  const signup = async ({
+    username,
+    email,
+    password,
+  }: {
+    username?: string;
+    email: string;
+    password: string;
+  }) => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch("/api/auth/signup", {
+      const data = await globalApiCallHelper({
+        api: "/auth/signup",
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify({ username, email, password }),
       });
-      const data = await response.json();
 
-      if (!response.ok) throw new Error(data.message || "Signup failed");
+      if (!data || data.error)
+        throw new Error(data?.message || "Signup failed");
 
       localStorage.setItem("token", data.token);
       dispatch({ type: "setUserProfile", payload: data.user });
@@ -66,27 +80,27 @@ export const useAuth = () => {
     dispatch({ type: "logout", payload: {} });
   };
 
-  // Load user session on initial mount
-  useEffect(() => {
-    const fetchUser = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) return;
+  // Fetch user session on app load
+  const fetchUser = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
 
-      try {
-        const response = await fetch("/api/auth/me", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        const data = await response.json();
+    try {
+      const data = await globalApiCallHelper({
+        api: "/auth/profile",
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
-        if (response.ok) dispatch({ type: "setUserProfile", payload: data });
-        else logout();
-      } catch {
+      if (data && !data.error) {
+        dispatch({ type: "setUserProfile", payload: data });
+      } else {
         logout();
       }
-    };
-
-    fetchUser();
-  }, []);
+    } catch {
+      logout();
+    }
+  };
 
   return {
     user: state.user,
@@ -96,5 +110,6 @@ export const useAuth = () => {
     signup,
     playAsGuest,
     logout,
+    fetchUser,
   };
 };

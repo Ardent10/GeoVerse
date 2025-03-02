@@ -1,51 +1,29 @@
 import { Button } from "pixel-retroui";
-import { useAppState } from "../../../store";
-import { AuthModal } from "@modules/game/components/authPopup";
+import { useAppState } from "@store/index";
+import { AuthModal } from "@modules/common/components/authPopup";
 import { useState } from "react";
+import { Heading } from "./heading";
+import { Logo } from "./logo";
+import { SoundToggleButton } from "./sound";
+import { UserProfile } from "./profile";
 
 export function Navbar() {
   const [state, dispatch] = useAppState();
   const [isAuthOpen, setIsAuthOpen] = useState(false);
 
-  const toggleSound = () => {
-    dispatch({
-      type: "setIsMuted",
-      payload: { isMuted: !state.isMuted },
-    });
-  };
-
   return (
-    <nav className="flex items-center justify-between px-6 py-3 bg-gray-900 text-white h-16 flex-grow-0">
+    <nav className="flex items-center justify-between px-12 py-3  bg-gray-900 text-white h-16 flex-grow-0">
+      <AuthModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
       <div className="flex items-center gap-3">
-        <img src="/assets/logo.png" alt="GeoVerse" className="h-8 w-8" />
-        <h1 className="text-xl font-bold">GeoVerse</h1>
+        <Logo className="h-8 w-8" />
+        <Heading className="text-xl md:text-2xl font-bold drop-shadow-lg   text-yellow-400 heading" />
       </div>
 
-      <Button className="btn-hover" onClick={toggleSound}>
-        {state?.isMuted ? (
-          <img
-            src="/assets/common/mute.png"
-            alt="mute"
-            width={30}
-            height={30}
-          />
-        ) : (
-          <img
-            src="/assets/common/sound.png"
-            alt="sound"
-            width={30}
-            height={30}
-          />
-        )}
-      </Button>
+      <SoundToggleButton />
 
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-4 ">
         <span className="text-lg font-semibold">Score: {state?.score}</span>
-        <Button className="btn-hover" onClick={() => setIsAuthOpen(true)}>
-          Sign Up / Login
-        </Button>
-
-        <AuthModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
+        <UserProfile />
       </div>
     </nav>
   );

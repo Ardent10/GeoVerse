@@ -6,6 +6,7 @@ interface ModalProps {
   onClose: () => void;
   title: string;
   children: ReactNode;
+  className?: string;
 }
 
 export const PixelPopup: React.FC<ModalProps> = ({
@@ -13,9 +14,15 @@ export const PixelPopup: React.FC<ModalProps> = ({
   onClose,
   title,
   children,
+  className,
 }) => {
   return (
-    <Popup className="rounded-lg w-full" isOpen={isOpen} onClose={onClose} title={title}>
+    <Popup
+      className={className}
+      isOpen={isOpen}
+      onClose={onClose}
+      title={title}
+    >
       {children}
     </Popup>
   );

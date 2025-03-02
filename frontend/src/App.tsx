@@ -3,29 +3,34 @@ import { useEffect } from "react";
 import { useAppState } from "./store";
 import { Game } from "@modules/game/page";
 import { Home } from "@modules/home/page";
+import { useAuth } from "@modules/home/hooks";
 
 function App() {
   const [state] = useAppState();
+  const { fetchUser } = useAuth();
 
   useEffect(() => {
+    // Fetch user data on initial render
+    fetchUser();
+
     const clickSound = new Audio("/assets/mouseclick.wav");
 
     const playSound = (event: Event) => {
-      // Check if the clicked element is a button
       if (event.target instanceof HTMLButtonElement && !state.isMuted) {
         clickSound.currentTime = 0;
-        clickSound.play().catch((error) => console.error("Audio play failed", error));
+        clickSound
+          .play()
+          .catch((error) => console.error("Audio play failed", error));
       }
     };
 
-    // Attach event listener to the document
     document.addEventListener("click", playSound);
 
     return () => {
       document.removeEventListener("click", playSound);
     };
   }, [state.isMuted]);
-
+  console.log("state=>", state);
   return (
     <Routes>
       <Route path="/" element={<Home />} />

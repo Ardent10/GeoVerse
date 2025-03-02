@@ -7,7 +7,7 @@ type GlobalApiCallHelperProps = {
   headers?: Record<string, string>;
 };
 
-let baseURL = process.env.BASE_URL;
+let baseURL: string | undefined = "";
 
 if (process.env.NODE_ENV === "development") {
   // Use development base URL

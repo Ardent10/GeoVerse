@@ -43,8 +43,14 @@ const GuessForm: React.FC<GuessFormProps> = ({ onSubmit }) => {
           type="text"
           placeholder="Enter city name"
           className="rounded-md"
+          borderColor="#eab308"
         />
-        <PixelButton type="submit" label="Guess" className="btn-hover"/>
+        <PixelButton
+          type="submit"
+          children="Guess"
+          borderColor="white"
+          className="px-4 py-2 text-md font-bold tracking-wide btn-hover bg-yellow-500 shadow-lg transition transform hover:scale-110 hover:bg-yellow-400"
+        />
       </form>
     </div>
   );

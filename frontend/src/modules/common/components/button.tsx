@@ -1,24 +1,53 @@
-import React from "react";
+import React, { ReactNode, useEffect, useRef } from "react";
 import { Button } from "pixel-retroui";
+import { useAppState } from "@store/index";
 
 interface ButtonProps {
-  label: string;
+  children?: ReactNode | string;
   onClick?: () => void;
   color?: string;
   type?: "button" | "submit";
-  className?:string
+  className?: string;
+  borderColor?: string;
 }
 
 export const PixelButton: React.FC<ButtonProps> = ({
-  label,
+  children,
   onClick,
-  color = "blue",
+  color,
   type,
-  className
+  className,
+  borderColor,
 }) => {
+  const [state] = useAppState();
+  const clickSound = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    clickSound.current = new Audio("/assets/mouseclick.wav");
+  }, []);
+
+  function handleClick() {
+    if (!state.isMuted && clickSound.current) {
+      clickSound.current.currentTime = 0;
+      clickSound.current.play().catch((error) => {
+        console.error("Audio play failed", error);
+      });
+    }
+
+    if (onClick) {
+      onClick();
+    }
+  }
+
   return (
-    <Button className={className} type={type} color={color} onClick={onClick}>
-      {label}
+    <Button
+      className={className}
+      type={type}
+      color={color}
+      onClick={handleClick}
+      borderColor={borderColor}
+    >
+      {children}
     </Button>
   );
 };

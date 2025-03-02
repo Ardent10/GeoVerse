@@ -1,36 +1,3 @@
-// import { motion } from "framer-motion";
-
-// export function Cloud({
-//   src,
-//   top,
-//   width,
-//   delay = 0,
-// }: {
-//   src: string;
-//   top: string;
-//   width: string;
-//   delay?: number;
-// }) {
-//   return (
-//     <motion.img
-//       src={src}
-//       className="absolute opacity-70"
-//       style={{
-//         top: `${top}vh`,
-//         width: `${width}vw`,
-//       }}
-//       initial={{ x: "100vw" }} // Start fully off-screen on the right
-//       animate={{ x: "-50vw" }} // Move far left before looping back
-//       transition={{
-//         duration: 20 + Math.random() * 10, // Speed varies between 20s - 30s
-//         repeat: Infinity, // Continuous movement
-//         ease: "linear",
-//         delay, // Staggered start times for variety
-//       }}
-//     />
-//   );
-// }
-
 import { motion } from "framer-motion";
 
 export function Cloud({
@@ -52,15 +19,16 @@ export function Cloud({
       className="absolute opacity-70"
       style={{
         width: `${width}vw`,
-        top: `${initial.y}vh`, // Start from passed y value
+        top: `${initial.y}vh`,
       }}
-      initial={{ x: `${initial.x}vw` }} // Start from passed x value
-      animate={{ x: "-20vw" }} // Move off-screen to the left
+      initial={{ x: `${initial.x}vw`, y: initial.y }}
+      animate={{ x: "-20vw" }}
       transition={{
         duration,
         repeat: Infinity,
         ease: "linear",
         delay,
+
       }}
     />
   );
