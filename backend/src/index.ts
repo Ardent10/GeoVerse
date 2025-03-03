@@ -20,9 +20,11 @@ app.get("/", (req, res) => {
   res.send("🚀 Server is up and running!");
 });
 
-app.use("/api/cities", cityRoutes);
-app.use("/api/auth", authRoutes);
+app.use("/api/v1/cities", cityRoutes);
+app.use("/api/v1/auth", authRoutes);
 
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
+
+export default app;
