@@ -17,12 +17,17 @@ app.use(cors());
 app.use(express.json());
 app.use(errorHandler);
 
-app.get("/", (req, res) => {
-  const cachedDb = getCachedDb();
-  if (cachedDb) {
-    res.status(200).json({ message: "Default connection API is working" });
-  } else {
-    res.status(500).json({ error: "Default connection API is not available" });
+app.get("/", async (req, res) => {
+  try {
+    await ConnectDB();
+    const cachedDb = getCachedDb();
+    if (cachedDb) {
+      res.status(200).json({ message: "Default connection API is working" });
+    } else {
+      res.status(500).json({ error: "Database connection is not available" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error", details: error });
   }
 });
 
@@ -30,16 +35,4 @@ app.use("/api/v1/cities", cityRoutes);
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/game", gameRoutes);
 
-const startServer = async () => {
-  try {
-    await ConnectDB();
-    app.listen(PORT, () => logger(`Server running on port ${PORT}`));
-  } catch (error) {
-    logger("Server startup failed:" + error);
-    process.exit(1);
-  }
-};
-
-startServer();
-
-export default app;
+app.listen(PORT, () => logger(`Server running on port ${PORT}`));
