@@ -1,47 +1,47 @@
-import mongoose, { Connection, Mongoose } from "mongoose";
+import mongoose, { Connection } from "mongoose";
 import { logger } from "../utils/logger";
 import dotenv from "dotenv";
 
 dotenv.config();
 const URI = process.env.MONGODB_URI || "";
-const DbName = process.env.Db_Name;
+const DbName = process.env.Db_Name || "";
 
 let cachedDb: Connection | null = null;
 
 async function connectDB(): Promise<void> {
+  if (!URI) {
+    logger("Error: MONGODB_URI environment variable is missing.");
+    process.exit(1);
+  }
+
+  if (cachedDb) {
+    logger("Using cached database connection.");
+    return;
+  }
+
   try {
-    if (!URI) {
-      throw new Error("MONGODB_URI environment variable is not defined");
-    }
-
-    if (cachedDb) {
-      logger("Using cached database connection");
-      return;
-    }
-
-    await mongoose.connect(URI, {
-      dbName: DbName,
-    });
-
-    cachedDb = mongoose.connection;
-    logger("Connected successfully to the database");
+    const connection = await mongoose.connect(URI, { dbName: DbName });
+    cachedDb = connection.connection;
+    logger("Successfully connected to the database.");
   } catch (error) {
-    logger("Failed to connect to the database:" + error);
-    throw error;
+    logger("Failed to connect to database: " + error);
+    process.exit(1); 
   }
 }
 
-function getCachedDb(): Connection {
+function getCachedDb(): Connection | null {
   if (!cachedDb) {
-    throw new Error("Database connection has not been established");
+    logger("⚠️ Database connection is not established.");
+    return null; 
   }
   return cachedDb;
 }
 
-function closeCachedDb(): Promise<void> {
+async function closeCachedDb(): Promise<void> {
   if (cachedDb) {
-    return cachedDb.close();
+    await cachedDb.close();
+    logger("Database connection closed.");
   }
-  return Promise.resolve();
 }
+
 export { connectDB, getCachedDb, closeCachedDb };
