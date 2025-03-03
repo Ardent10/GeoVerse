@@ -7,12 +7,14 @@ import {
   Button,
 } from "pixel-retroui";
 import { useAppState } from "@store/index";
+import { useAuth } from "@modules/home/hooks";
 
 export function UserProfile() {
   const [state, dispatch] = useAppState();
+  const { logout } = useAuth();
 
   function handleLogout() {
-    dispatch({ type: "logout", payload: {} });
+    logout();
   }
 
   return (
@@ -25,7 +27,7 @@ export function UserProfile() {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="bg-gray-800 text-white rounded-md shadow-lg">
         <DropdownMenuItem className="px-3 py-2 font-semibold">
-          {state?.user?.name || "Guest"}
+          {state?.user?.username || "Guest"}
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem className="px-3 py-2 text-red-500 hover:bg-gray-700 rounded-md">

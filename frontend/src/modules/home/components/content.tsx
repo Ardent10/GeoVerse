@@ -1,4 +1,5 @@
 import { AuthModal } from "@modules/common/components/authPopup";
+import { Toast } from "@modules/common/components/toast";
 import { useAppState } from "@store/index";
 import { motion } from "framer-motion";
 import { Button } from "pixel-retroui";

@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
 import { useAppState } from "@store/index";
 import { globalApiCallHelper } from "@utils/globalApiCallHelper";
+import { Toast } from "@modules/common/components/toast";
 
 export const useAuth = () => {
   const [state, dispatch] = useAppState();
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [toast, setToast] = useState<{
+    message: string;
+    type: "success" | "error";
+  } | null>(null);
 
   // Function to handle login
   const login = async ({
@@ -16,7 +20,8 @@ export const useAuth = () => {
     password: string;
   }) => {
     setLoading(true);
-    setError(null);
+    setToast(null);
+
     try {
       const data = await globalApiCallHelper({
         api: "/auth/login",
@@ -26,10 +31,12 @@ export const useAuth = () => {
 
       if (!data || data.error) throw new Error(data?.message || "Login failed");
 
-      localStorage.setItem("token", data.token);
+      localStorage.setItem("token", data.user.token);
       dispatch({ type: "setUserProfile", payload: data.user });
+
+      setToast({ message: "Login successful!", type: "success" });
     } catch (err: any) {
-      setError(err.message);
+      setToast({ message: err.message, type: "error" });
     } finally {
       setLoading(false);
     }
@@ -46,7 +53,8 @@ export const useAuth = () => {
     password: string;
   }) => {
     setLoading(true);
-    setError(null);
+    setToast(null);
+
     try {
       const data = await globalApiCallHelper({
         api: "/auth/signup",
@@ -59,8 +67,10 @@ export const useAuth = () => {
 
       localStorage.setItem("token", data.token);
       dispatch({ type: "setUserProfile", payload: data.user });
+
+      setToast({ message: "Signup successful!", type: "success" });
     } catch (err: any) {
-      setError(err.message);
+      setToast({ message: err.message, type: "error" });
     } finally {
       setLoading(false);
     }
@@ -72,12 +82,14 @@ export const useAuth = () => {
       type: "setUserProfile",
       payload: { id: "guest", name: "Guest", isGuest: true },
     });
+    setToast({ message: "Playing as Guest", type: "success" });
   };
 
   // Function to handle logout
   const logout = () => {
     localStorage.removeItem("token");
     dispatch({ type: "logout", payload: {} });
+    setToast({ message: "Logged out successfully", type: "success" });
   };
 
   // Fetch user session on app load
@@ -105,11 +117,11 @@ export const useAuth = () => {
   return {
     user: state.user,
     loading,
-    error,
     login,
     signup,
     playAsGuest,
     logout,
     fetchUser,
+    toast, // Provide toast state
   };
 };
