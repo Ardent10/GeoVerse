@@ -7,10 +7,11 @@ type GlobalApiCallHelperProps = {
   headers?: Record<string, string>;
 };
 
+const API_BASE_URL = import.meta.env.VITE_BASE_URL;
 const baseURL =
   process.env.NODE_ENV === "development"
     ? "http://localhost:8000/api/v1"
-    : process.env.BASE_URL;
+    : API_BASE_URL;
 
 export const globalApiCallHelper = async ({
   api,
@@ -37,6 +38,6 @@ export const globalApiCallHelper = async ({
     return data;
   } catch (error) {
     console.error("API Call Error:", error);
-    throw error; 
+    throw error;
   }
 };
