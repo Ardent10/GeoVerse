@@ -6,14 +6,16 @@ interface AuthenticatedRequest extends Request {
   user?: IUser;
 }
 
-export const signupUser = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
+export const signupUser = async (req: Request, res: Response) => {
   try {
     const { username, email, password } = req.body;
     const user = await authService.register(username, email, password);
-    res.status(201).json(user);
+    res.status(201).json({
+      username: user.username,
+      email: user.email,
+      score: user.score,
+      token: user.token,
+    });
   } catch (error) {
     res.status(400).json({ message: (error as Error).message });
   }
@@ -22,8 +24,8 @@ export const signupUser = async (
 export const loginUser = async (req: Request, res: Response): Promise<void> => {
   try {
     const { email, password } = req.body;
-    const token = await authService.login(email, password);
-    res.json({ token });
+    const user = await authService.login(email, password);
+    res.json({ user });
   } catch (error) {
     res.status(401).json({ message: (error as Error).message });
   }

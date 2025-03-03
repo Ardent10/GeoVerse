@@ -53,7 +53,7 @@ const register = async (
   };
 };
 
-const login = async (email: string, password: string): Promise<string> => {
+const login = async (email: string, password: string) => {
   const user = await User.findOne({ email });
 
   if (!user) {
@@ -66,7 +66,12 @@ const login = async (email: string, password: string): Promise<string> => {
     throw new Error("Invalid email or password");
   }
 
-  return generateToken(user.id);
+  return {
+    username: user.username,
+    email: user.email,
+    score: user.score,
+    token: generateToken(user.id),
+  };
 };
 
 export default { register, login };
