@@ -11,7 +11,7 @@ let baseURL: string | undefined = "";
 
 if (process.env.NODE_ENV === "development") {
   // Use development base URL
-  baseURL = "http://localhost:8000/api";
+  baseURL = "http://localhost:8000/api/v1";
 } else {
   // Use production base URL
   baseURL = process.env.BASE_URL;
