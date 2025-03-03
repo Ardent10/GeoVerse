@@ -971,4 +971,274 @@ export const cities = [
       "The name of this city is famous worldwide for tourism and culture.",
     ],
   },
+  {
+    city: "Bogotá",
+    country: "Colombia",
+    latitude: 4.711,
+    longitude: -74.0721,
+    clues: [
+      "This city is the capital of a South American country known for coffee and emeralds.",
+      "It sits high in the Andes mountains.",
+    ],
+    fun_fact: [
+      "It is one of the highest capital cities in the world at 2,640 meters above sea level.",
+      "It has a famous street art culture and murals all over the city.",
+    ],
+    trivia: [
+      "The city's name comes from an indigenous Muisca word.",
+      "It is home to the Gold Museum, which has the largest collection of pre-Hispanic gold artifacts.",
+    ],
+  },
+  {
+    city: "Ulaanbaatar",
+    country: "Mongolia",
+    latitude: 47.8864,
+    longitude: 106.9057,
+    clues: [
+      "This city is the coldest capital in the world.",
+      "It is known for its nomadic culture and the annual Naadam Festival.",
+    ],
+    fun_fact: [
+      "Nearly half of the country’s population lives in this city.",
+      "It has one of the most extreme temperature ranges of any city on Earth.",
+    ],
+    trivia: [
+      "The city’s name means 'Red Hero.'",
+      "It has a statue of Genghis Khan at its central square.",
+    ],
+  },
+  {
+    city: "Riga",
+    country: "Latvia",
+    latitude: 56.9496,
+    longitude: 24.1052,
+    clues: [
+      "This city is the largest in the Baltic region.",
+      "It is famous for its Art Nouveau architecture.",
+    ],
+    fun_fact: [
+      "It has one of the highest concentrations of Art Nouveau buildings in the world.",
+      "A popular Christmas tree tradition started in this city.",
+    ],
+    trivia: [
+      "Its Old Town is a UNESCO World Heritage Site.",
+      "A famous Black Balsam herbal liqueur originates from here.",
+    ],
+  },
+  {
+    city: "Belgrade",
+    country: "Serbia",
+    latitude: 44.7866,
+    longitude: 20.4489,
+    clues: [
+      "This city is located at the confluence of the Danube and Sava rivers.",
+      "It has been destroyed and rebuilt over 40 times in history.",
+    ],
+    fun_fact: [
+      "It is one of the oldest continuously inhabited cities in Europe.",
+      "A floating nightclub culture thrives along its rivers.",
+    ],
+    trivia: [
+      "The name of the city means 'White City.'",
+      "It was the capital of Yugoslavia before Serbia.",
+    ],
+  },
+  {
+    city: "Muscat",
+    country: "Oman",
+    latitude: 23.588,
+    longitude: 58.3829,
+    clues: [
+      "This city is the capital of a Middle Eastern country with a long maritime history.",
+      "It is home to the Sultan Qaboos Grand Mosque.",
+    ],
+    fun_fact: [
+      "It has one of the largest opera houses in the region.",
+      "Frankincense trade has been significant in this city for centuries.",
+    ],
+    trivia: [
+      "It is known for its low-rise, whitewashed buildings.",
+      "The city has been an important port since ancient times.",
+    ],
+  },
+  {
+    city: "Tbilisi",
+    country: "Georgia",
+    latitude: 41.6938,
+    longitude: 44.8015,
+    clues: [
+      "This city is the capital of a country at the crossroads of Europe and Asia.",
+      "It has a famous sulfur bath district.",
+    ],
+    fun_fact: [
+      "It was named after the hot springs found in the area.",
+      "It is home to a 5th-century fortress called Narikala.",
+    ],
+    trivia: [
+      "The city’s name means 'warm place.'",
+      "It has a statue known as the 'Mother of Georgia,' holding a sword and a bowl of wine.",
+    ],
+  },
+  {
+    city: "San José",
+    country: "Costa Rica",
+    latitude: 9.9281,
+    longitude: -84.0907,
+    clues: [
+      "This city is the capital of a Central American country known for its biodiversity.",
+      "It is home to the National Theatre, a historic landmark.",
+    ],
+    fun_fact: [
+      "It has no standing army, as the country abolished its military in 1948.",
+      "The phrase 'Pura Vida' is commonly used by its residents to mean 'pure life.'",
+    ],
+    trivia: [
+      "Coffee exports played a significant role in the city's early development.",
+      "It has a well-preserved Spanish colonial district.",
+    ],
+  },
+  {
+    city: "Yerevan",
+    country: "Armenia",
+    latitude: 40.1792,
+    longitude: 44.4991,
+    clues: [
+      "This city is one of the oldest continuously inhabited capitals in the world.",
+      "It is located near Mount Ararat, a symbol of the country.",
+    ],
+    fun_fact: [
+      "It is known as the 'Pink City' due to its unique volcanic stone buildings.",
+      "The world's oldest known leather shoe was found in a cave near this city.",
+    ],
+    trivia: [
+      "The city was founded in 782 BC, before Rome.",
+      "It is home to the world's largest repository of Armenian manuscripts.",
+    ],
+  },
+  {
+    city: "Vientiane",
+    country: "Laos",
+    latitude: 17.9757,
+    longitude: 102.6331,
+    clues: [
+      "This city is the capital of a landlocked Southeast Asian country.",
+      "It is known for its golden stupa, Pha That Luang.",
+    ],
+    fun_fact: [
+      "It is one of the smallest capital cities in Asia.",
+      "French colonial influence is visible in its architecture and food.",
+    ],
+    trivia: [
+      "Its name means 'City of Sandalwood.'",
+      "It has a monument that resembles the Arc de Triomphe, called Patuxai.",
+    ],
+  },
+  {
+    city: "Tunis",
+    country: "Tunisia",
+    latitude: 36.8065,
+    longitude: 10.1815,
+    clues: [
+      "This city is the capital of a North African country with Roman ruins nearby.",
+      "It is close to the ancient city of Carthage.",
+    ],
+    fun_fact: [
+      "The famous Punic Wars were fought in this region.",
+      "It has a large Medina, which is a UNESCO World Heritage Site.",
+    ],
+    trivia: [
+      "It was a major trading hub in the Mediterranean for centuries.",
+      "Its national dish, couscous, is widely popular.",
+    ],
+  },
+  {
+    city: "Nairobi",
+    country: "Kenya",
+    latitude: -1.286389,
+    longitude: 36.817223,
+    clues: [
+      "This city is known as the 'Safari Capital of the World.'",
+      "It is home to one of the few national parks located within a major city.",
+    ],
+    fun_fact: [
+      "The city gets its name from a Maasai phrase meaning 'cool water.'",
+      "It is one of Africa’s fastest-growing cities.",
+    ],
+    trivia: [
+      "It hosts the headquarters of the United Nations Environment Programme.",
+      "A famous orphanage here rescues baby elephants and rhinos.",
+    ],
+  },
+  {
+    city: "Lagos",
+    country: "Nigeria",
+    latitude: 6.524379,
+    longitude: 3.379206,
+    clues: [
+      "This is Africa's most populous city.",
+      "It is known for its vibrant nightlife and music scene, particularly Afrobeats.",
+    ],
+    fun_fact: [
+      "The city has a floating slum called Makoko.",
+      "It was once the capital of its country before Abuja took over in 1991.",
+    ],
+    trivia: [
+      "It has one of the busiest seaports in Africa.",
+      "This city is home to Nollywood, the world's second-largest film industry.",
+    ],
+  },
+  {
+    city: "Karachi",
+    country: "Pakistan",
+    latitude: 24.8607,
+    longitude: 67.0011,
+    clues: [
+      "This city is the largest in its country and serves as a major port.",
+      "It is known for its famous beach called Clifton Beach.",
+    ],
+    fun_fact: [
+      "The city is home to one of the largest shopping malls in South Asia.",
+      "It was once the capital before the title was transferred to Islamabad.",
+    ],
+    trivia: [
+      "It is known as the 'City of Lights' due to its vibrant nightlife.",
+      "The founder of the country is buried in this city.",
+    ],
+  },
+  {
+    city: "Havana",
+    country: "Cuba",
+    latitude: 23.1136,
+    longitude: -82.3666,
+    clues: [
+      "This city is known for its colorful vintage cars.",
+      "It has a famous waterfront called the Malecón.",
+    ],
+    fun_fact: [
+      "It is the largest city in the Caribbean by population.",
+      "A drink called the mojito is believed to have originated here.",
+    ],
+    trivia: [
+      "It is home to a famous cigar industry.",
+      "A historic revolution took place here in the 1950s.",
+    ],
+  },
+  {
+    city: "Almaty",
+    country: "Kazakhstan",
+    latitude: 43.222,
+    longitude: 76.8512,
+    clues: [
+      "This city was once the capital of its country before it moved to Astana.",
+      "It is surrounded by mountains and is known for its apple orchards.",
+    ],
+    fun_fact: [
+      "The name of this city means 'Father of Apples.'",
+      "It is home to the world’s highest ice-skating rink.",
+    ],
+    trivia: [
+      "It is the largest city in its country but not the capital.",
+      "A famous mountain range, the Tien Shan, is visible from here.",
+    ],
+  },
 ];

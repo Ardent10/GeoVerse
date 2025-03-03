@@ -8,12 +8,14 @@ dotenv.config();
 const JWT_SECRET_KEY = process.env.JWT_SECRET ?? "";
 
 interface AuthResponse {
-  id: string;
-  username?: string;
-  email: string;
+  user: {
+    id: string;
+    username?: string;
+    email: string;
+    token: string;
+    invited: boolean;
+  };
   score: number;
-  token: string;
-  invited: boolean;
 }
 
 const generateToken = (id: string): string => {
@@ -35,7 +37,7 @@ const register = async (
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
 
-  const user: IUser = await User.create({
+  const userData: IUser = await User.create({
     username,
     email,
     password: hashedPassword,
@@ -43,21 +45,26 @@ const register = async (
     invited,
   });
 
-  if (!user) {
+  if (!userData) {
     throw new Error("Invalid user data");
   }
 
   return {
-    id: user.id,
-    username: user.username,
-    email: user.email,
-    score: user.score,
-    invited: user.invited,
-    token: generateToken(user.id),
+    user: {
+      id: userData.id,
+      username: userData.username,
+      email: userData.email,
+      invited: userData.invited,
+      token: generateToken(userData.id),
+    },
+    score: userData.score,
   };
 };
 
-const login = async (email: string, password: string) => {
+const login = async (
+  email: string,
+  password: string
+): Promise<AuthResponse> => {
   const user = await User.findOne({ email });
 
   if (!user) {
@@ -71,11 +78,14 @@ const login = async (email: string, password: string) => {
   }
 
   return {
-    username: user.username,
-    email: user.email,
+    user: {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      invited: user.invited,
+      token: generateToken(user.id),
+    },
     score: user.score,
-    invited: user.invited,
-    token: generateToken(user.id),
   };
 };
 

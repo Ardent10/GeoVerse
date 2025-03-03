@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import cityRoutes from "./routes/city";
 import authRoutes from "./routes/auth";
+import gameRoutes from "./routes/game";
 import { errorHandler } from "./middleware/errorHandler";
 import { connectDB, getCachedDb } from "./config/db";
 
@@ -26,6 +27,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/v1/cities", cityRoutes);
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/game", gameRoutes);
 
 const startServer = async () => {
   try {

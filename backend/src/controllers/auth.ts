@@ -9,13 +9,14 @@ interface AuthenticatedRequest extends Request {
 export const signupUser = async (req: Request, res: Response) => {
   try {
     const { username, email, password, invited } = req.body;
-    const user = await authService.register(username, email, password, invited);
+    const userData = await authService.register(
+      username,
+      email,
+      password,
+      invited
+    );
     res.status(201).json({
-      username: user.username,
-      email: user.email,
-      score: user.score,
-      token: user.token,
-      invited: user.invited,
+      userData,
     });
   } catch (error) {
     res.status(400).json({ message: (error as Error).message });
@@ -25,8 +26,8 @@ export const signupUser = async (req: Request, res: Response) => {
 export const loginUser = async (req: Request, res: Response): Promise<void> => {
   try {
     const { email, password } = req.body;
-    const user = await authService.login(email, password);
-    res.json({ user });
+    const userData = await authService.login(email, password);
+    res.json({ user: userData.user, score: userData.score });
   } catch (error) {
     res.status(401).json({ message: (error as Error).message });
   }

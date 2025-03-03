@@ -1,7 +1,7 @@
 import { cities } from "../data/city";
 
 const getAllCountries = () => {
-  return [...new Set(cities.map((city) => city.country))];
+  return [...new Set(cities.map((city) => city.country).sort())];
 };
 
 const getCityByCountry = (country: string) => {
