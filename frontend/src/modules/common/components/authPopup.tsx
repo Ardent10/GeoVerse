@@ -17,7 +17,6 @@ interface AuthModalProps {
 
 function AuthForm({ onClose, setShowAuthForm }: AuthModalProps) {
   const [isSignUp, setIsSignUp] = useState(false);
-
   const { login, signup, toast } = useAuth();
   const {
     register,

@@ -34,6 +34,7 @@ export function GameGlobe() {
         "//unpkg.com/three-globe/example/img/earth-blue-marble.jpg"
       )
       .bumpImageUrl("//unpkg.com/three-globe/example/img/earth-topology.png")
+      .backgroundImageUrl("//unpkg.com/three-globe/example/img/night-sky.png")
       .hexPolygonResolution(3)
       .hexPolygonMargin(0.3)
       .hexPolygonUseDots(true)
@@ -49,6 +50,11 @@ export function GameGlobe() {
         </div>
       `
       );
+
+    globeContainer.style.position = "relative";
+    globeContainer.style.display = "flex";
+    globeContainer.style.justifyContent = "center";
+    globeContainer.style.alignItems = "center";
 
     const controls = world.controls();
     controls.enableZoom = true;
@@ -131,14 +137,14 @@ export function GameGlobe() {
 
     // Add a label for the guessed city and country
     globeRef.current
-      .pointOfView({ lat: latitude, lng: longitude, altitude: 2 }, 2000) // Move to location
+      .pointOfView({ lat: latitude, lng: longitude, altitude: 2 }, 2000)
       .labelsData([
         { lat: latitude, lng: longitude, text: `${city}, ${country}` },
-      ]) // Display text
+      ])
       .labelText("text")
       .labelSize(1.8)
       .labelColor(() => "white")
-      .labelDotRadius(0) // Remove the dot
+      .labelDotRadius(0)
       .labelResolution(5);
 
     // Create a sprite using location.png
@@ -177,7 +183,6 @@ export function GameGlobe() {
     countryInfoDiv.style.color = "white";
     countryInfoDiv.style.padding = "10px";
     countryInfoDiv.style.borderRadius = "5px";
-    countryInfoDiv.style.fontFamily = "Minecraft";
 
     // If we have population data from GeoJSON
     let populationInfo = "";

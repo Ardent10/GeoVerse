@@ -39,8 +39,16 @@ export function Game() {
 
   return (
     <Layout>
-      <GameGlobe />
-      <GuessForm onSubmit={handleGuess} />
+      <div className="flex h-full">
+        <div className="w-1/3 bg-black text-white p-6 flex flex-col justify-center items-center">
+          <h2 className="text-xl font-bold mb-4">Where is this?</h2>
+          <GuessForm onSubmit={handleGuess} />
+        </div>
+
+        <div className="w-2/3 relative">
+          <GameGlobe />
+        </div>
+      </div>
     </Layout>
   );
 }

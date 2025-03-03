@@ -1,7 +1,12 @@
 export const initialState = {
-  user: null,
+  user: {
+    id: null,
+    username: null,
+    email: null,
+    score: 0,
+    token: null,
+  },
   isLoading: false,
   guessedCities: null,
-  score: 0,
-  isMuted:false,
+  isMuted: false,
 };

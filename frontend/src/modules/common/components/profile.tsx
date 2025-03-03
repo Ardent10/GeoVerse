@@ -29,12 +29,16 @@ export function UserProfile() {
         <DropdownMenuItem className="px-3 py-2 font-semibold">
           {state?.user?.username || "Guest"}
         </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem className="px-3 py-2 text-red-500 hover:bg-gray-700 rounded-md">
-          <div onClick={handleLogout} className="flex items-center gap-2">
-            <span>Logout</span>
-          </div>
-        </DropdownMenuItem>
+        {state?.user?.username && (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem className="px-3 py-2 text-red-500 hover:bg-gray-700 rounded-md">
+              <div onClick={handleLogout} className="flex items-center gap-2">
+                <span>Logout</span>
+              </div>
+            </DropdownMenuItem>
+          </>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );

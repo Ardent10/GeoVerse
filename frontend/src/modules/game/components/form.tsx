@@ -27,7 +27,8 @@ const GuessForm: React.FC<GuessFormProps> = ({ onSubmit }) => {
   };
 
   return (
-    <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2">
+    // <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2">
+    <div className=" flex flex-col items-center gap-2">
       {errors.guess && (
         <PixelBubble
           text={errors.guess.message ?? ""}

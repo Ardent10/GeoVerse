@@ -20,7 +20,7 @@ const globalReducers = (state: State, action: Action) => {
     case "setScore": {
       return {
         ...state,
-        score: action.payload,
+        user: { ...state.user, score: action.payload },
       };
     }
     case "setIsMuted": {

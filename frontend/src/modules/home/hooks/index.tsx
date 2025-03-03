@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAppState } from "@store/index";
 import { globalApiCallHelper } from "@utils/globalApiCallHelper";
-import { Toast } from "@modules/common/components/toast";
 
 export const useAuth = () => {
   const [state, dispatch] = useAppState();
@@ -11,7 +10,6 @@ export const useAuth = () => {
     type: "success" | "error";
   } | null>(null);
 
-  // Function to handle login
   const login = async ({
     email,
     password,
@@ -29,11 +27,11 @@ export const useAuth = () => {
         body: JSON.stringify({ email, password }),
       });
 
-      if (!data || data.error) throw new Error(data?.message || "Login failed");
+      if (!data || data.error)
+        setToast({ message: "Login Failed: " + data?.message, type: "error" });
 
       localStorage.setItem("token", data.user.token);
       dispatch({ type: "setUserProfile", payload: data.user });
-
       setToast({ message: "Login successful!", type: "success" });
     } catch (err: any) {
       setToast({ message: err.message, type: "error" });
@@ -63,7 +61,7 @@ export const useAuth = () => {
       });
 
       if (!data || data.error)
-        throw new Error(data?.message || "Signup failed");
+        setToast({ message: "Signup Failed: " + data?.message, type: "error" });
 
       localStorage.setItem("token", data.token);
       dispatch({ type: "setUserProfile", payload: data.user });
@@ -122,6 +120,6 @@ export const useAuth = () => {
     playAsGuest,
     logout,
     fetchUser,
-    toast, // Provide toast state
+    toast,
   };
 };
