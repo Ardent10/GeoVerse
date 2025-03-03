@@ -9,7 +9,6 @@ import { connectDB, getCachedDb } from "./config/db";
 dotenv.config();
 const PORT = process.env.PORT || 5000;
 
-connectDB();
 const app = express();
 
 app.use(cors());
@@ -28,8 +27,16 @@ app.get("/", (req, res) => {
 app.use("/api/v1/cities", cityRoutes);
 app.use("/api/v1/auth", authRoutes);
 
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-});
+const startServer = async () => {
+  try {
+    await connectDB();
+    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+  } catch (error) {
+    console.error("Server startup failed:", error);
+    process.exit(1);
+  }
+};
+
+startServer();
 
 export default app;
