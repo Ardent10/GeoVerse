@@ -20,7 +20,7 @@ export const getClue = async (req: Request, res: Response): Promise<void> => {
     }
 
     const clue = gameService.getClue(country, Number(clueIndex) || 0);
-    res.json(clue);
+    res.json({clue});
   } catch (error) {
     res.status(500).json({ error: "Error fetching clue" });
   }

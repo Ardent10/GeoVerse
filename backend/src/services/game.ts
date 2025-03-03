@@ -11,11 +11,12 @@ const getCityByCountry = (country: string) => {
 };
 
 const getClue = (country: string, clueIndex: number) => {
-  const city = getCityByCountry(country);
-  if (!city || clueIndex >= city.clues.length)
+  const cityData = getCityByCountry(country);
+
+  if (!cityData?.city || clueIndex > cityData?.clues?.length)
     return { clue: "No more clues available." };
 
-  return { clue: city.clues[clueIndex] };
+  return { clue: cityData?.clues[clueIndex] };
 };
 
 const validateAnswer = async (
