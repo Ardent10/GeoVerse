@@ -1,10 +1,10 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import cityRoutes from "./src/routes/city";
-import authRoutes from "./src/routes/auth";
-import { errorHandler } from "./src/middleware/errorHandler";
-import { connectDB, getCachedDb } from "./src/config/db";
+import cityRoutes from "./routes/city";
+import authRoutes from "./routes/auth";
+import { errorHandler } from "./middleware/errorHandler";
+import { connectDB, getCachedDb } from "./config/db";
 
 dotenv.config();
 const PORT = process.env.PORT || 5000;
