@@ -9,6 +9,8 @@ import { ConnectDB, getCachedDb } from "./config/db";
 import { logger } from "./utils/logger";
 
 dotenv.config();
+ConnectDB();
+
 const PORT = process.env.PORT || 5000;
 
 const app = express();
@@ -19,7 +21,6 @@ app.use(errorHandler);
 
 app.get("/", async (req, res) => {
   try {
-    await ConnectDB();
     const cachedDb = getCachedDb();
     if (cachedDb) {
       res.status(200).json({ message: "Default connection API is working" });
