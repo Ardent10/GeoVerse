@@ -1,33 +1,62 @@
-import Destination from "../models/destination";
-import User from "../models/user";
+import { cities } from "../data/city";
 
-const getRandomDestination = async () => {
-  const count = await Destination.countDocuments();
-  const randomIndex = Math.floor(Math.random() * count);
-  return await Destination.findOne().skip(randomIndex);
+const getAllCountries = () => {
+  return [...new Set(cities.map((city) => city.country))];
 };
 
-const validateAnswer = async (userId: string, destinationId: string, answer: string) => {
-  const destination = await Destination.findById(destinationId);
-  if (!destination) return { correct: false, message: "Destination not found" };
-
-  const isCorrect = destination.name && destination.name.toLowerCase() === answer.toLowerCase();
-  await User.findByIdAndUpdate(userId, { $inc: { score: isCorrect ? 1 : 0 } });
-  return { correct: isCorrect, message: isCorrect ? "🎉 Correct!" : "😢 Incorrect!" };
+const getCityByCountry = (country: string) => {
+  return cities.find(
+    (city) => city.country.toLowerCase() === country.toLowerCase()
+  );
 };
 
-const getFunFact = async (destinationId: string) => {
-  const destination = await Destination.findById(destinationId);
-  return destination ? destination.funFact : "No fun fact available.";
+const getClue = (country: string, clueIndex: number) => {
+  const city = getCityByCountry(country);
+  if (!city || clueIndex >= city.clues.length)
+    return { clue: "No more clues available." };
+
+  return { clue: city.clues[clueIndex] };
 };
 
-const createChallenge = async (username: string, friendUsername: string) => {
-  return `https://yourgame.com/play?challenger=${username}&invitee=${friendUsername}`;
+const validateAnswer = async (
+  userId: string,
+  country: string,
+  answer: string,
+  cluesUsed: number
+) => {
+  const city = getCityByCountry(country);
+  if (!city) return { correct: false, message: "Destination not found" };
+
+  const isCorrect = city.city.toLowerCase() === answer.toLowerCase();
+  const scorePenalty = isCorrect ? Math.max(0, cluesUsed * -5) : 0;
+
+  return {
+    correct: isCorrect,
+    message: isCorrect ? "🎉 Correct!" : "😢 Incorrect!",
+    scoreChange: isCorrect ? 10 + scorePenalty : -5,
+  };
+};
+const getFunFactAndTrivia = async (destination: string) => {
+  const city = cities.find(
+    (c) => c.city.toLowerCase() === destination.toLowerCase()
+  );
+
+  if (!city) {
+    return {
+      funFact: "No fun fact available.",
+      trivia: "No trivia available.",
+    };
+  }
+
+  return {
+    funFact: city.fun_fact[Math.floor(Math.random() * city.fun_fact.length)],
+    trivia: city.trivia[Math.floor(Math.random() * city.trivia.length)],
+  };
 };
 
-const getFriendScore = async (username: string) => {
-  const user = await User.findOne({ username });
-  return user ? user.score : 0;
+export default {
+  getAllCountries,
+  getClue,
+  validateAnswer,
+  getFunFactAndTrivia,
 };
-
-export default { getRandomDestination, validateAnswer, getFunFact, createChallenge, getFriendScore };

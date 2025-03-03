@@ -5,6 +5,7 @@ export interface IUser extends Document {
   email: string;
   password: string;
   score: number;
+  invited: boolean;
 }
 
 const UserSchema: Schema<IUser> = new mongoose.Schema(
@@ -18,6 +19,11 @@ const UserSchema: Schema<IUser> = new mongoose.Schema(
       type: String,
       required: true,
       unique: true,
+    },
+    invited: {
+      type: Boolean,
+      required: true,
+      default: false,
     },
     score: {
       type: Number,

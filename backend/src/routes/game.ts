@@ -1,18 +1,11 @@
 import express from "express";
-import {
-  getRandomDestination,
-  submitAnswer,
-  getFunFact,
-  challengeFriend,
-  getFriendScore,
-} from "../controllers/game";
+import { getAllCountries, getClue, submitAnswer, getFunFactAndTrivia } from "../controllers/game";
 
 const router = express.Router();
 
-router.get("/random", getRandomDestination);
-router.post("/submit", submitAnswer);
-router.get("/fact/:destinationId", getFunFact);
-router.post("/challenge", challengeFriend);
-router.get("/score/:username", getFriendScore);
+router.get("/countries", getAllCountries);
+router.get("/clue/:country/:clueIndex", getClue);
+router.post("/submit-answer", submitAnswer);
+router.get("/fun-fact/:city", getFunFactAndTrivia);
 
 export default router;

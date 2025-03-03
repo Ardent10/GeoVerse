@@ -13,6 +13,7 @@ interface AuthResponse {
   email: string;
   score: number;
   token: string;
+  invited: boolean;
 }
 
 const generateToken = (id: string): string => {
@@ -22,7 +23,8 @@ const generateToken = (id: string): string => {
 const register = async (
   username: string,
   email: string,
-  password: string
+  password: string,
+  invited: boolean
 ): Promise<AuthResponse> => {
   const userExists = await User.findOne({ email });
 
@@ -38,6 +40,7 @@ const register = async (
     email,
     password: hashedPassword,
     score: 0,
+    invited,
   });
 
   if (!user) {
@@ -49,6 +52,7 @@ const register = async (
     username: user.username,
     email: user.email,
     score: user.score,
+    invited: user.invited,
     token: generateToken(user.id),
   };
 };
@@ -70,6 +74,7 @@ const login = async (email: string, password: string) => {
     username: user.username,
     email: user.email,
     score: user.score,
+    invited: user.invited,
     token: generateToken(user.id),
   };
 };
