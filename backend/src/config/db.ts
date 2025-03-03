@@ -1,47 +1,44 @@
-import mongoose, { Connection } from "mongoose";
+import mongoose, { Connection, Mongoose } from "mongoose";
 import { logger } from "../utils/logger";
-import dotenv from "dotenv";
 
-dotenv.config();
-const URI = process.env.MONGODB_URI || "";
-const DbName = process.env.Db_Name || "";
+const URI = process.env.MONGODB_URI || ""; // Replace with your MongoDB connection string
+const DbName = process.env.Db_Name; // Replace with your database name
 
 let cachedDb: Connection | null = null;
 
-async function connectDB(): Promise<void> {
-  if (!URI) {
-    logger("Error: MONGODB_URI environment variable is missing.");
-    process.exit(1);
-  }
-
-  if (cachedDb) {
-    logger("Using cached database connection.");
-    return;
-  }
-
+export async function ConnectDB(): Promise<void> {
   try {
-    const connection = await mongoose.connect(URI, { dbName: DbName });
-    cachedDb = connection.connection;
-    logger("Successfully connected to the database.");
+    if (!URI) {
+      throw new Error("MONGODB_URI environment variable is not defined");
+    }
+
+    if (cachedDb) {
+      logger("Using cached database connection");
+      return;
+    }
+
+    await mongoose.connect(URI, {
+      dbName: DbName,
+    });
+
+    cachedDb = mongoose.connection;
+    logger("Connected successfully to the database");
   } catch (error) {
-    logger("Failed to connect to database: " + error);
-    process.exit(1); 
+    logger("Failed to connect to the database:" + error);
+    throw error;
   }
 }
 
-function getCachedDb(): Connection | null {
+export function getCachedDb(): Connection {
   if (!cachedDb) {
-    logger("⚠️ Database connection is not established.");
-    return null; 
+    throw new Error("Database connection has not been established");
   }
   return cachedDb;
 }
 
-async function closeCachedDb(): Promise<void> {
+export function closeCachedDb(): Promise<void> {
   if (cachedDb) {
-    await cachedDb.close();
-    logger("Database connection closed.");
+    return cachedDb.close();
   }
+  return Promise.resolve();
 }
-
-export { connectDB, getCachedDb, closeCachedDb };

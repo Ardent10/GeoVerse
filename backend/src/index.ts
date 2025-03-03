@@ -5,7 +5,8 @@ import cityRoutes from "./routes/city";
 import authRoutes from "./routes/auth";
 import gameRoutes from "./routes/game";
 import { errorHandler } from "./middleware/errorHandler";
-import { connectDB, getCachedDb } from "./config/db";
+import { ConnectDB, getCachedDb } from "./config/db";
+import { logger } from "./utils/logger";
 
 dotenv.config();
 const PORT = process.env.PORT || 5000;
@@ -31,10 +32,10 @@ app.use("/api/v1/game", gameRoutes);
 
 const startServer = async () => {
   try {
-    await connectDB();
-    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+    await ConnectDB();
+    app.listen(PORT, () => logger(`Server running on port ${PORT}`));
   } catch (error) {
-    console.error("Server startup failed:", error);
+    logger("Server startup failed:" + error);
     process.exit(1);
   }
 };
