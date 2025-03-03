@@ -30,7 +30,9 @@ function App() {
       document.removeEventListener("click", playSound);
     };
   }, [state.isMuted]);
+
   console.log("state=>", state);
+  
   return (
     <Routes>
       <Route path="/" element={<Home />} />

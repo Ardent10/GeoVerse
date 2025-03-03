@@ -23,7 +23,7 @@ export function useGame() {
     }
   };
 
-  const fetchClue = async (country: string, clueIndex: number) => {
+  const getCluesByCountry = async (country: string, clueIndex: number) => {
     try {
       setLoading(true);
       setError(null);
@@ -79,7 +79,7 @@ export function useGame() {
     state,
     loading,
     error,
-    fetchClue,
+    getCluesByCountry,
     fetchFunFact,
     submitGuess,
     getAllCountries,

@@ -9,6 +9,7 @@ interface ButtonProps {
   type?: "button" | "submit";
   className?: string;
   borderColor?: string;
+  disabled?: boolean;
 }
 
 export const PixelButton: React.FC<ButtonProps> = ({
@@ -18,6 +19,7 @@ export const PixelButton: React.FC<ButtonProps> = ({
   type,
   className,
   borderColor,
+  disabled
 }) => {
   const [state] = useAppState();
   const clickSound = useRef<HTMLAudioElement | null>(null);
@@ -41,6 +43,7 @@ export const PixelButton: React.FC<ButtonProps> = ({
 
   return (
     <Button
+      disabled={disabled}
       className={className}
       type={type}
       color={color}

@@ -5,10 +5,10 @@ import { globalApiCallHelper } from "@utils/globalApiCallHelper";
 export const useAuth = () => {
   const [state, dispatch] = useAppState();
   const [loading, setLoading] = useState(false);
-  const [toast, setToast] = useState<{
-    message: string;
-    type: "success" | "error";
-  } | null>(null);
+
+  const showToast = (message: string, type: "success" | "error") => {
+    dispatch({ type: "SET_TOAST", payload: { visible: true, message, type } });
+  };
 
   const login = async ({
     email,
@@ -18,7 +18,6 @@ export const useAuth = () => {
     password: string;
   }) => {
     setLoading(true);
-    setToast(null);
 
     try {
       const data = await globalApiCallHelper({
@@ -27,21 +26,26 @@ export const useAuth = () => {
         body: JSON.stringify({ email, password }),
       });
 
-      if (!data || data.error)
-        setToast({ message: "Login Failed: " + data?.message, type: "error" });
+      if (!data || data.error) {
+        showToast(
+          "Login Failed: " + (data?.message || "Unknown error"),
+          "error"
+        );
+        return;
+      }
 
       localStorage.setItem("token", data.user.token);
       dispatch({ type: "SET_USER_PROFILE", payload: data.user });
       dispatch({ type: "SET_SCORE", payload: data.score });
-      setToast({ message: "Login successful!", type: "success" });
+
+      showToast("Login successful!", "success");
     } catch (err: any) {
-      setToast({ message: err.message, type: "error" });
+      showToast(err.message, "error");
     } finally {
       setLoading(false);
     }
   };
 
-  // Function to handle signup
   const signup = async ({
     username,
     email,
@@ -52,7 +56,6 @@ export const useAuth = () => {
     password: string;
   }) => {
     setLoading(true);
-    setToast(null);
 
     try {
       const data = await globalApiCallHelper({
@@ -61,16 +64,21 @@ export const useAuth = () => {
         body: JSON.stringify({ username, email, password }),
       });
 
-      if (!data || data.error)
-        setToast({ message: "Signup Failed: " + data?.message, type: "error" });
+      if (!data || data.error) {
+        showToast(
+          "Signup Failed: " + (data?.message || "Unknown error"),
+          "error"
+        );
+        return;
+      }
 
       localStorage.setItem("token", data.token);
       dispatch({ type: "SET_USER_PROFILE", payload: data.user });
       dispatch({ type: "SET_SCORE", payload: data.score });
 
-      setToast({ message: "Signup successful!", type: "success" });
+      showToast("Signup successful!", "success");
     } catch (err: any) {
-      setToast({ message: err.message, type: "error" });
+      showToast(err.message, "error");
     } finally {
       setLoading(false);
     }
@@ -81,17 +89,14 @@ export const useAuth = () => {
       type: "SET_USER_PROFILE",
       payload: { id: "guest", name: "Guest", isGuest: true },
     });
-    setToast({ message: "Playing as Guest", type: "success" });
+    showToast("Playing as Guest", "success");
   };
 
-  // Function to handle logout
   const logout = () => {
     localStorage.removeItem("token");
     dispatch({ type: "LOGOUT", payload: {} });
-    setToast({ message: "Logged out successfully", type: "success" });
   };
 
-  // Fetch user session on app load
   const fetchUser = async () => {
     const token = localStorage.getItem("token");
     if (!token) return;
@@ -116,12 +121,12 @@ export const useAuth = () => {
 
   return {
     user: state.user,
+    toast: state.toast,
     loading,
     login,
     signup,
     playAsGuest,
     logout,
     fetchUser,
-    toast,
   };
 };

@@ -21,10 +21,7 @@ const globalReducers = (state: State, action: Action) => {
     case "SET_SCORE": {
       return {
         ...state,
-        user: {
-          ...state.user,
-          score: action.payload,
-        },
+        score: action.payload,
       };
     }
     case "SET_IS_MUTED": {
@@ -48,8 +45,42 @@ const globalReducers = (state: State, action: Action) => {
         countriesList: action.payload,
       };
     }
+    case "SET_TOAST": {
+      return {
+        ...state,
+        toast: action.payload,
+      };
+    }
+    case "SET_SELECTED_COUNTRY": {
+      return {
+        ...state,
+        selectedCountry: action.payload.selectedCountry,
+      };
+    }
+
+    case "SET_CLUE": {
+      return {
+        ...state,
+        clues: [...state.clues, action.payload],
+      };
+    }
+
+    case "RESET_CLUES": {
+      return {
+        ...state,
+        clues: [],
+      };
+    }
+
     case "LOGOUT": {
-      return initialState;
+      return {
+        ...initialState,
+        toast: {
+          visible: true,
+          message: "Logged out successfully",
+          type: "success",
+        },
+      };
     }
     default:
       return state;

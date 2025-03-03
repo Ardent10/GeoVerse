@@ -28,8 +28,6 @@ const DropdownInput: React.FC<DropdownInputProps> = ({
   error,
   onSelect,
 }) => {
-  const [inputValue, setInputValue] = useState("");
-
   return (
     <div className="relative w-full">
       {error && (
@@ -54,9 +52,8 @@ const DropdownInput: React.FC<DropdownInputProps> = ({
                   placeholder={placeholder}
                   className="rounded-md w-full"
                   borderColor="#eab308"
-                  value={inputValue}
+                  value={field.value}
                   onChange={(e) => {
-                    setInputValue(e.target.value);
                     field.onChange(e.target.value);
                   }}
                 />
@@ -68,7 +65,6 @@ const DropdownInput: React.FC<DropdownInputProps> = ({
                     <div
                       key={option}
                       onClick={() => {
-                        setInputValue(option);
                         field.onChange(option);
                         if (onSelect) onSelect(option);
                       }}

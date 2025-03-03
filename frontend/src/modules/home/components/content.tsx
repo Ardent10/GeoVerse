@@ -44,7 +44,7 @@ export function HeroContent() {
             borderColor="#ffff"
             className="px-4 py-2 text-md font-bold tracking-wide btn-hover bg-yellow-500 shadow-lg transition transform hover:scale-110 hover:bg-yellow-400"
             onClick={() => {
-              !state?.user ? setIsAuthOpen(true) : navigate("/game");
+              !state?.user?.id ? setIsAuthOpen(true) : navigate("/game");
             }}
           >
             ▶ Start Adventure

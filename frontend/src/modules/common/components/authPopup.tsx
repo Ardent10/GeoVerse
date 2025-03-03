@@ -42,7 +42,7 @@ function AuthForm({ onClose, setShowAuthForm }: AuthModalProps) {
 
   return (
     <>
-      {toast && <Toast {...toast} />}
+      {toast?.visibility && <Toast message={toast.message} type={toast.type} />}
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col gap-4 p-4 min-w-[26vw] max-w-sm mx-auto"
