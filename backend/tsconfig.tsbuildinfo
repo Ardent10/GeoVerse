@@ -1,1 +1,1 @@
-{"root":["./index.ts","./config/db.ts","./controllers/city.ts","./middleware/errorhandler.ts","./models/city.ts","./routes/city.ts","./services/city.ts","./utils/logger.ts"],"version":"5.8.2"}
+{"root":["./src/index.ts","./src/config/db.ts","./src/controllers/auth.ts","./src/controllers/city.ts","./src/middleware/auth.ts","./src/middleware/errorhandler.ts","./src/models/city.ts","./src/models/user.ts","./src/routes/auth.ts","./src/routes/city.ts","./src/services/auth.ts","./src/services/city.ts","./src/utils/logger.ts"],"version":"5.8.2"}
