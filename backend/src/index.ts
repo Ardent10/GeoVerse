@@ -16,6 +16,10 @@ app.use(cors());
 app.use(express.json());
 app.use(errorHandler);
 
+app.get("/", (req, res) => {
+  res.send("🚀 Server is up and running!");
+});
+
 app.use("/api/cities", cityRoutes);
 app.use("/api/auth", authRoutes);
 
