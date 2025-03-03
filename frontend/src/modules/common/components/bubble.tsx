@@ -4,10 +4,15 @@ interface PixelBubbleProps {
   text: string;
   direction: "left" | "right";
   className?: string;
-  borderColor?:string
+  borderColor?: string;
 }
 
-export function PixelBubble({ text, className, direction, borderColor }: PixelBubbleProps) {
+export function PixelBubble({
+  text,
+  className,
+  direction,
+  borderColor,
+}: PixelBubbleProps) {
   return (
     <Bubble
       borderColor={borderColor}

@@ -21,7 +21,7 @@ export function UserProfile() {
     <DropdownMenu>
       <DropdownMenuTrigger
         borderColor="white"
-        className="border-2 border-white transition-transform hover:scale-110 focus:outline-none"
+        className=" bg-yellow-400 transition-transform hover:scale-110 focus:outline-none"
       >
         <img src="/assets/common/user.png" alt="User" height={30} width={30} />
       </DropdownMenuTrigger>

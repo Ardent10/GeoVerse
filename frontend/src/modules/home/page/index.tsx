@@ -3,9 +3,7 @@ import { HeroContent } from "../components/content";
 import { Cloud } from "@modules/common/components/cloud";
 import { playSound } from "@utils/playSound";
 import { useEffect, useState } from "react";
-import { useAppState } from "@store/index";
-import { PixelButton } from "@modules/common/components/button";
-import { Toast } from "@modules/common/components/toast";
+
 
 export function Home() {
   useEffect(() => {

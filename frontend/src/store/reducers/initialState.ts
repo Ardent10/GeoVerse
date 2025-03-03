@@ -9,4 +9,5 @@ export const initialState = {
   isLoading: false,
   guessedCities: null,
   isMuted: false,
+  countriesList: [],
 };

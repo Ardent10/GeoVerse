@@ -13,7 +13,7 @@ export function SoundToggleButton() {
   return (
     <Button
       borderColor="white"
-      className=" text-md font-bold tracking-wide btn-hover bg-yellow-500 shadow-lg transition transform hover:scale-110 hover:bg-yellow-400"
+      className=" text-md font-bold tracking-wide btn-hover bg-yellow-400 shadow-lg transition transform hover:scale-110 hover:bg-yellow-400"
       onClick={toggleSound}
     >
       {state?.isMuted ? (

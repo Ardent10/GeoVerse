@@ -7,19 +7,14 @@ type GlobalApiCallHelperProps = {
   headers?: Record<string, string>;
 };
 
-let baseURL: string | undefined = "";
-
-if (process.env.NODE_ENV === "development") {
-  // Use development base URL
-  baseURL = "http://localhost:8000/api/v1";
-} else {
-  // Use production base URL
-  baseURL = process.env.BASE_URL;
-}
+const baseURL =
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:8000/api/v1"
+    : process.env.BASE_URL;
 
 export const globalApiCallHelper = async ({
   api,
-  method,
+  method = "GET",
   body = null,
   headers = {},
 }: GlobalApiCallHelperProps) => {
@@ -30,13 +25,18 @@ export const globalApiCallHelper = async ({
         "Content-Type": "application/json",
         ...headers,
       },
-      body,
+      body: body ? JSON.stringify(body) : null,
     });
 
     const data = await response.json();
 
+    if (!response.ok) {
+      throw new Error(data.message || "API request failed");
+    }
+
     return data;
   } catch (error) {
-    console.log("ERROR", error);
+    console.error("API Call Error:", error);
+    throw error; 
   }
 };

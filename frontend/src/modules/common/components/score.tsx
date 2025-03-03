@@ -5,10 +5,10 @@ export function Score() {
   const [state] = useAppState();
   return (
     <PixelButton
+      borderColor="white"
+      className="bg-yellow-400"
       children={
-        <span className="text-lg font-semibold">
-          Score: {state?.user?.score}
-        </span>
+        <span className="text-lg font-semibold">Score: {state?.score}</span>
       }
     />
   );

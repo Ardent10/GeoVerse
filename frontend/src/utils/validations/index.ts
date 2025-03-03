@@ -18,8 +18,18 @@ const guessForm = z.object({
     .min(3, "City name must be at least 3 characters"),
 });
 
+const countryFormSchema = z.object({
+  country: z
+    .string()
+    .min(3, { message: "Country name must be at least 3 characters long" })
+    .max(50, { message: "Country name is too long" })
+    .regex(/^[a-zA-Z\s]+$/, { message: "Only letters and spaces are allowed" }),
+});
+
 // Form Types
 type AuthFormData = z.infer<typeof authSchema>;
+type CountryFormData = z.infer<typeof countryFormSchema>;
+type GuessFormData = z.infer<typeof guessForm>;
 
-export { authSchema, guessForm };
-export type { AuthFormData };
+export { authSchema, guessForm, countryFormSchema };
+export type { AuthFormData, CountryFormData, GuessFormData };

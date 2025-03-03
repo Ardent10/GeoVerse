@@ -17,9 +17,9 @@ export function Share() {
     const baseUrl = window.location.origin;
     const uniqueLink = `${baseUrl}/invite?user=${encodeURIComponent(
       state?.user?.username
-    )}&score=${state?.user?.score}`;
+    )}&score=${state?.score}`;
     setInviteLink(uniqueLink);
-  }, [state?.user?.username, state?.user?.score]);
+  }, [state?.user?.username, state?.score]);
 
   const closeModal = () => setShowShareModal(false);
 
@@ -29,7 +29,7 @@ export function Share() {
   };
 
   const shareOnWhatsApp = () => {
-    const message = `🚀 ${state?.user?.username} scored ${state?.user?.score} points! Can you beat them? Play now: ${inviteLink}`;
+    const message = `🚀 ${state?.user?.username} scored ${state?.score} points! Can you beat them? Play now: ${inviteLink}`;
     const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, "_blank");
   };
@@ -60,8 +60,7 @@ export function Share() {
           <Card className="p-4 flex flex-col items-center">
             <p className="text-gray-700 font-semibold text-center">
               {state?.user?.username} scored{" "}
-              <span className="text-blue-600">{state?.user?.score}</span>{" "}
-              points! 🎉
+              <span className="text-blue-600">{state?.score}</span> points! 🎉
             </p>
 
             <div className="flex flex-col space-y-4 mt-4">

@@ -31,7 +31,8 @@ export const useAuth = () => {
         setToast({ message: "Login Failed: " + data?.message, type: "error" });
 
       localStorage.setItem("token", data.user.token);
-      dispatch({ type: "setUserProfile", payload: data.user });
+      dispatch({ type: "SET_USER_PROFILE", payload: data.user });
+      dispatch({ type: "SET_SCORE", payload: data.score });
       setToast({ message: "Login successful!", type: "success" });
     } catch (err: any) {
       setToast({ message: err.message, type: "error" });
@@ -64,7 +65,8 @@ export const useAuth = () => {
         setToast({ message: "Signup Failed: " + data?.message, type: "error" });
 
       localStorage.setItem("token", data.token);
-      dispatch({ type: "setUserProfile", payload: data.user });
+      dispatch({ type: "SET_USER_PROFILE", payload: data.user });
+      dispatch({ type: "SET_SCORE", payload: data.score });
 
       setToast({ message: "Signup successful!", type: "success" });
     } catch (err: any) {
@@ -74,10 +76,9 @@ export const useAuth = () => {
     }
   };
 
-  // Function to allow users to play as a guest
   const playAsGuest = () => {
     dispatch({
-      type: "setUserProfile",
+      type: "SET_USER_PROFILE",
       payload: { id: "guest", name: "Guest", isGuest: true },
     });
     setToast({ message: "Playing as Guest", type: "success" });
@@ -86,7 +87,7 @@ export const useAuth = () => {
   // Function to handle logout
   const logout = () => {
     localStorage.removeItem("token");
-    dispatch({ type: "logout", payload: {} });
+    dispatch({ type: "LOGOUT", payload: {} });
     setToast({ message: "Logged out successfully", type: "success" });
   };
 
@@ -103,7 +104,8 @@ export const useAuth = () => {
       });
 
       if (data && !data.error) {
-        dispatch({ type: "setUserProfile", payload: data });
+        dispatch({ type: "SET_USER_PROFILE", payload: data.user });
+        dispatch({ type: "SET_SCORE", payload: data.score });
       } else {
         logout();
       }
