@@ -26,7 +26,7 @@ export const globalApiCallHelper = async ({
         "Content-Type": "application/json",
         ...headers,
       },
-      body: body ? JSON.stringify(body) : null,
+      body,
     });
 
     const data = await response.json();
