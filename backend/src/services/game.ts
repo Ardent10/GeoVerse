@@ -50,7 +50,11 @@ const validateAnswer = async (
   return {
     correct: isCorrect,
     message: isCorrect ? "🎉 Correct!" : "😢 Incorrect!",
-    newScore: user?.score ?? 0,
+    newScore: {
+      score: user?.score,
+      correctAnswer: user?.correct,
+      incorrectAnswer: user?.incorrect,
+    },
   };
 };
 
