@@ -43,19 +43,10 @@ export function HeroContent() {
           <Button
             borderColor="#ffff"
             className="px-4 py-2 text-md font-bold tracking-wide btn-hover bg-yellow-500 shadow-lg transition transform hover:scale-110 hover:bg-yellow-400"
-            // onClick={() => {
-            //   !state?.user?.id ? setIsAuthOpen(true) : navigate("/game");
-            // }}
-            onClick={() =>
-              dispatch({
-                type: "SET_TOAST",
-                payload: {
-                  visible: true,
-                  message: "toast message",
-                  type: "success",
-                },
-              })
-            }
+            onClick={() => {
+              !state?.user?.id ? setIsAuthOpen(true) : navigate("/game");
+            }}
+           
           >
             ▶ Start Adventure
           </Button>
