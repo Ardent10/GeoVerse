@@ -46,11 +46,10 @@ const DropdownInput: React.FC<DropdownInputProps> = ({
             <DropdownMenu className="w-full">
               <DropdownMenuTrigger type="button" className="rounded-md">
                 <Input
-                  {...field}
                   type="text"
                   placeholder={placeholder}
                   className="h-8 text-sm rounded-md  focus:ring-yellow-400"
-                  value={field.value}
+                  value={field.value || ""}
                   onChange={(e) => field.onChange(e.target.value)}
                   borderColor="#eab308"
                 />

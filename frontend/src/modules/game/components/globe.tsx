@@ -139,6 +139,12 @@ export function GameGlobe() {
         )
         .map((sum: number) => sum / geometry.coordinates[0].length);
 
+      globeRef.current.hexPolygonColor((d: any) =>
+        d.properties.ADMIN.toLowerCase() ===
+        state?.selectedCountry?.toLowerCase()
+          ? "#FFD700" // Yellow for selected country
+          : "#1e293b"
+      );
       // Move to country
       globeRef.current.pointOfView(
         {
@@ -150,6 +156,27 @@ export function GameGlobe() {
       );
     }
   }, [state.selectedCountry, countriesData]);
+
+  // Reset globe to default when game resets
+  useEffect(() => {
+    if (state.resetGame && globeRef.current) {
+      const world = globeRef.current;
+
+      // Reset auto-rotation
+      const controls = world.controls();
+      controls.autoRotate = true;
+
+      // Reset view to default position
+      world.pointOfView({ lat: 0, lng: 0, altitude: 2.5 }, 2000);
+    }
+  }, [state.resetGame]);
+
+  // Clear the reset flag after applying reset**
+  useEffect(() => {
+    if (state.resetGame) {
+      dispatch({ type: "CLEAR_GAME_RESET", payload: {} });
+    }
+  }, [state.resetGame]);
 
   return (
     <div

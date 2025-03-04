@@ -64,6 +64,7 @@ function CountryForm() {
             type="submit"
             children="Select"
             borderColor="white"
+            disabled={state?.selectedCountry}
             className="px-4 py-1 btn-hover bg-yellow-500 shadow-lg transition transform hover:scale-110 hover:bg-yellow-400"
           />
         </div>

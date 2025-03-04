@@ -93,6 +93,13 @@ const globalReducers = (state: State, action: Action) => {
         clues: initialState.clues,
         guessedCity: initialState.guessedCity,
         guessedCityResult: initialState.guessedCityResult,
+        resetGame: true,
+      };
+    }
+    case "CLEAR_GAME_RESET": {
+      return {
+        ...state,
+        resetGame: false,
       };
     }
 

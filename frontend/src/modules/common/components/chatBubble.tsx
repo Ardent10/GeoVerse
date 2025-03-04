@@ -4,13 +4,15 @@ import { PixelBubble } from "./bubble";
 interface ChatBubbleProps {
   text: string;
   variant: "user" | "bot";
+  id?: string;
 }
 
-export function ChatBubble({ text, variant }: ChatBubbleProps) {
+export function ChatBubble({ id, text, variant }: ChatBubbleProps) {
   const isUser = variant === "user";
 
   return (
     <div
+      key={id}
       className={`flex items-center gap-2 w-full ${
         isUser ? "justify-end" : "justify-start"
       }`}

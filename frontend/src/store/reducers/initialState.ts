@@ -16,7 +16,7 @@ export const initialState = {
   correctAnswer: 0,
   incorrectAnswer: 0,
   countriesList: [],
-  
+  resetGame: false,
   clues: [],
   selectedCountry: "",
 

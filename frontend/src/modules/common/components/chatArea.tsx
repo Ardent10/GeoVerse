@@ -24,9 +24,14 @@ export function ChatArea() {
       {/* Bot Messages (Clues) */}
       {state.clues?.length > 0 && (
         <div className="flex flex-col items-start gap-4 w-full">
-          {state.clues.map(
+          {state?.clues?.map(
             ({ clue, index }: { clue: string; index: number }) => (
-              <ChatBubble key={index} text={clue} variant="bot" />
+              <ChatBubble
+                key={`${clue}-${index}`}
+                id={`${clue}-${index}`}
+                text={clue}
+                variant="bot"
+              />
             )
           )}
 
