@@ -8,7 +8,7 @@ import { useNavigate } from "react-router";
 
 export function HeroContent() {
   const [isAuthOpen, setIsAuthOpen] = useState(false);
-  const [state] = useAppState();
+  const [state, dispatch] = useAppState();
   const navigate = useNavigate();
 
   return (
