@@ -1,6 +1,7 @@
 import React, { ReactNode, useEffect, useRef } from "react";
 import { Button } from "pixel-retroui";
 import { useAppState } from "@store/index";
+import { PixelLoader } from "./loader";
 
 interface ButtonProps {
   children?: ReactNode | string;
@@ -10,6 +11,7 @@ interface ButtonProps {
   className?: string;
   borderColor?: string;
   disabled?: boolean;
+  loading?: boolean;
 }
 
 export const PixelButton: React.FC<ButtonProps> = ({
@@ -20,6 +22,7 @@ export const PixelButton: React.FC<ButtonProps> = ({
   className,
   borderColor,
   disabled,
+  loading,
 }) => {
   const [state] = useAppState();
   const clickSound = useRef<HTMLAudioElement | null>(null);
@@ -54,7 +57,7 @@ export const PixelButton: React.FC<ButtonProps> = ({
       onClick={handleClick}
       borderColor={borderColor}
     >
-      {children}
+      {loading ? <PixelLoader variant="ghost"/> : children}
     </Button>
   );
 };

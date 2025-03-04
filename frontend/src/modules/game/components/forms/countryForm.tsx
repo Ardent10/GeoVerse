@@ -9,10 +9,11 @@ import { useGame } from "@modules/game/hooks";
 import { PixelBubble } from "@modules/common/components/bubble";
 import ConfettiBoom from "react-confetti-boom";
 import { ChatArea } from "@modules/common/components/chatArea";
+import { PixelLoader } from "@modules/common/components/loader";
 
 function CountryForm() {
   const [state, dispatch] = useAppState();
-  const { getAllCountries, getCluesByCountry } = useGame();
+  const { getAllCountries, getCluesByCountry, loading } = useGame();
 
   const {
     control,
@@ -69,7 +70,7 @@ function CountryForm() {
           />
         </div>
       </form>
-
+      {loading && <PixelLoader variant="bg" />}
       <ChatArea />
     </div>
   );
