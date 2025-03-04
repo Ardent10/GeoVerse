@@ -16,7 +16,10 @@ export const signupUser = async (req: Request, res: Response) => {
       invited
     );
     res.status(201).json({
-      userData,
+      user: userData.user,
+      score: userData.score,
+      correctAnswer: userData.correctAnswer,
+      incorrectAnswer: userData.incorrectAnswer,
     });
   } catch (error) {
     res.status(400).json({ message: (error as Error).message });
@@ -27,7 +30,12 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
   try {
     const { email, password } = req.body;
     const userData = await authService.login(email, password);
-    res.json({ user: userData.user, score: userData.score });
+    res.json({
+      user: userData.user,
+      score: userData.score,
+      correctAnswer: userData.correctAnswer,
+      incorrectAnswer: userData.incorrectAnswer,
+    });
   } catch (error) {
     res.status(401).json({ message: (error as Error).message });
   }
@@ -41,5 +49,15 @@ export const getUserProfile = async (
     res.status(401).json({ message: "Unauthorized" });
     return;
   }
-  res.json(req.user);
+  res.json({
+    user: {
+      id: req.user._id,
+      username: req.user.username,
+      email: req.user.email,
+      invited: req.user.invited,
+    },
+    score: req.user.score,
+    correctAnswer: req.user.correct,
+    incorrectAnswer: req.user.incorrect,
+  });
 };

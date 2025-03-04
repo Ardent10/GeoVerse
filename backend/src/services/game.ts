@@ -1,4 +1,5 @@
 import { cities } from "../data/city";
+import User from "../models/user";
 
 const getAllCountries = () => {
   return [...new Set(cities.map((city) => city.country).sort())];
@@ -20,23 +21,39 @@ const getClue = (country: string, clueIndex: number) => {
 };
 
 const validateAnswer = async (
-  userId: string,
+  userId: string | null,
   country: string,
   answer: string,
   cluesUsed: number
 ) => {
-  const city = getCityByCountry(country);
-  if (!city) return { correct: false, message: "Destination not found" };
+  let user = null;
 
-  const isCorrect = city.city.toLowerCase() === answer.toLowerCase();
-  const scorePenalty = isCorrect ? Math.max(0, cluesUsed * -5) : 0;
+  if (userId) {
+    user = await User.findById(userId);
+  }
+
+  const cityData = getCityByCountry(country);
+  if (!cityData) return { correct: false, message: "Destination not found" };
+
+  const isCorrect = cityData.city.toLowerCase() === answer.toLowerCase();
+  const scorePenalty = isCorrect ? Math.max(0, (cluesUsed - 1) * -5) : 0;
+  const scoreChange = isCorrect ? 10 + scorePenalty : -5;
+
+  if (user) {
+    // Update user stats only if they exist
+    user.score = (user.score || 0) + scoreChange;
+    user.correct = (user.correct || 0) + (isCorrect ? 1 : 0);
+    user.incorrect = (user.incorrect || 0) + (isCorrect ? 0 : 1);
+    await user.save();
+  }
 
   return {
     correct: isCorrect,
     message: isCorrect ? "🎉 Correct!" : "😢 Incorrect!",
-    scoreChange: isCorrect ? 10 + scorePenalty : -5,
+    newScore: user?.score ?? 0,
   };
 };
+
 const getFunFactAndTrivia = async (destination: string) => {
   const city = cities.find(
     (c) => c.city.toLowerCase() === destination.toLowerCase()

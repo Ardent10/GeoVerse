@@ -16,6 +16,8 @@ interface AuthResponse {
     invited: boolean;
   };
   score: number;
+  correctAnswer: number;
+  incorrectAnswer: number;
 }
 
 const generateToken = (id: string): string => {
@@ -58,6 +60,8 @@ const register = async (
       token: generateToken(userData.id),
     },
     score: userData.score,
+    correctAnswer: userData.correct,
+    incorrectAnswer: userData.incorrect,
   };
 };
 
@@ -86,6 +90,8 @@ const login = async (
       token: generateToken(user.id),
     },
     score: user.score,
+    correctAnswer: user.correct,
+    incorrectAnswer: user.incorrect,
   };
 };
 
