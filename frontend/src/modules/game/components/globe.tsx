@@ -44,7 +44,7 @@ export function GameGlobe() {
       // @ts-ignore
       .hexPolygonLabel(
         ({ properties: d }: { properties: CountryProperties }) => `
-        <div style="background-color: rgba(0,0,0,0.75); color: white; border-radius: 6px; padding: 10px;">
+        <div style="background-color: rgba(0,0,0,0.75); color: white; border-radius: 6px; padding: 10px; font-family:Minecraft">
           <b>${d.ADMIN} (${d.ISO_A2})</b> <br />
           Population: <i>${d.POP_EST.toLocaleString()}</i>
         </div>

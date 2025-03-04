@@ -21,7 +21,9 @@ const globalReducers = (state: State, action: Action) => {
     case "SET_SCORE": {
       return {
         ...state,
-        score: action.payload,
+        score: action.payload.score,
+        correctAnswer: action.payload.correctAnswer,
+        incorrectAnswer: action.payload.incorrectAnswer,
       };
     }
     case "SET_IS_MUTED": {
@@ -71,6 +73,17 @@ const globalReducers = (state: State, action: Action) => {
         clues: [],
       };
     }
+    case "INCREMENT_CORRECT":
+      return {
+        ...state,
+        correctAnswer: state.correctAnswer + 1,
+      };
+
+    case "INCREMENT_INCORRECT":
+      return {
+        ...state,
+        incorrectAnswer: state.incorrectAnswer + 1,
+      };
 
     case "LOGOUT": {
       return {

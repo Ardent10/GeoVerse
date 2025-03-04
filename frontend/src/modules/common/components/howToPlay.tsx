@@ -35,13 +35,13 @@ export function HowToPlay() {
             <h2 className="text-lg font-bold mt-4 mb-2">Scoring System</h2>
             <ul className="list-disc pl-4 space-y-1">
               <li>
-                Correct on 1st clue: <strong className="text-yellow-400">+10 points</strong>
+                Correct on 1st clue: <strong className="text-green-400">+10 points</strong>
               </li>
               <li>
-                Correct on 2nd clue: <strong className="text-red-400">+5 points</strong>
+                Correct on 2nd clue: <strong className="text-yellow-400">+5 points</strong>
               </li>
               <li>
-                Wrong guess: <strong>-5 points</strong>
+                Wrong guess: <strong className="text-red-400">-5 points</strong>
               </li>
             </ul>
 

@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { useAppState } from "@store/index";
 import { globalApiCallHelper } from "@utils/globalApiCallHelper";
+import { useNavigate } from "react-router";
 
 export const useAuth = () => {
+  const navigate = useNavigate();
   const [state, dispatch] = useAppState();
   const [loading, setLoading] = useState(false);
 
@@ -36,8 +38,16 @@ export const useAuth = () => {
 
       localStorage.setItem("token", data.user.token);
       dispatch({ type: "SET_USER_PROFILE", payload: data.user });
-      dispatch({ type: "SET_SCORE", payload: data.score });
+      dispatch({
+        type: "SET_SCORE",
+        payload: {
+          score: data.score,
+          correctAnswer: data.correctAnswer,
+          incorrectAnswer: data.incorrectAnswer,
+        },
+      });
 
+      navigate("/game");
       showToast("Login successful!", "success");
     } catch (err: any) {
       showToast(err.message, "error");
@@ -74,8 +84,15 @@ export const useAuth = () => {
 
       localStorage.setItem("token", data.token);
       dispatch({ type: "SET_USER_PROFILE", payload: data.user });
-      dispatch({ type: "SET_SCORE", payload: data.score });
-
+      dispatch({
+        type: "SET_SCORE",
+        payload: {
+          score: data.score,
+          correctAnswer: data.correctAnswer,
+          incorrectAnswer: data.incorrectAnswer,
+        },
+      });
+      navigate("/game");
       showToast("Signup successful!", "success");
     } catch (err: any) {
       showToast(err.message, "error");
@@ -95,6 +112,7 @@ export const useAuth = () => {
   const logout = () => {
     localStorage.removeItem("token");
     dispatch({ type: "LOGOUT", payload: {} });
+    navigate("/");
   };
 
   const fetchUser = async () => {
@@ -110,7 +128,14 @@ export const useAuth = () => {
 
       if (data && !data.error) {
         dispatch({ type: "SET_USER_PROFILE", payload: data.user });
-        dispatch({ type: "SET_SCORE", payload: data.score });
+        dispatch({
+          type: "SET_SCORE",
+          payload: {
+            score: data.score,
+            correctAnswer: data.correctAnswer,
+            incorrectAnswer: data.incorrectAnswer,
+          },
+        });
       } else {
         logout();
       }

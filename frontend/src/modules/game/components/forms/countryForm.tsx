@@ -52,13 +52,13 @@ function CountryForm() {
         <PixelBubble
           text={errors?.country?.message}
           direction="left"
-          className="text-xs font-normal text-red-500"
+          className="text-xs font-normal  text-red-500 font-minecraft"
           borderColor="#ef4444"
         />
       )}
 
-      <form onSubmit={handleSubmit(handleFormSubmit)} className="flex gap-4">
-        <div>
+      <form onSubmit={handleSubmit(handleFormSubmit)} className="flex gap-2">
+        <div className="w-full">
           <DropdownInput
             name="country"
             control={control}
@@ -71,7 +71,7 @@ function CountryForm() {
             type="submit"
             children="Select"
             borderColor="white"
-            className="px-4 py-2 btn-hover bg-yellow-500 shadow-lg transition transform hover:scale-110 hover:bg-yellow-400"
+            className="px-4 py-1 btn-hover bg-yellow-500 shadow-lg transition transform hover:scale-110 hover:bg-yellow-400"
           />
         </div>
       </form>
@@ -83,7 +83,8 @@ function CountryForm() {
             <PixelBubble
               text={state.selectedCountry}
               direction="right"
-              className="text-lg"
+              className="text-sm font-minecraft"
+              borderColor="#eab308"
             />
             <img
               src="/assets/common/user.png"
@@ -111,7 +112,8 @@ function CountryForm() {
                   <PixelBubble
                     text={clue}
                     direction="left"
-                    className="text-lg"
+                    className="text-sm font-minecraft"
+                    borderColor="#eab308"
                   />
                 </div>
               )
@@ -122,7 +124,7 @@ function CountryForm() {
                 <PixelButton
                   onClick={handleRevealMoreClues}
                   borderColor="white"
-                  className="mt-2 px-4 py-2 btn-hover bg-blue-500 shadow-lg transition transform hover:scale-110 hover:bg-blue-400"
+                  className="mt-2 px-4 py-2 btn-hover bg-yellow-500 shadow-lg transition transform hover:scale-110 hover:bg-yellow-400"
                   disabled={state.clues.length >= 2}
                 >
                   Reveal More Clue

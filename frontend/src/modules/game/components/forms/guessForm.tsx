@@ -5,9 +5,18 @@ import { PixelButton } from "@modules/common/components/button";
 import { PixelBubble } from "@modules/common/components/bubble";
 import { guessForm, GuessFormData } from "@utils/validations";
 import { useAppState } from "@store/index";
+import { useGame } from "@modules/game/hooks";
+import { useEffect, useState } from "react";
+import GuessPopup from "../resultPopup";
 
 function GuessForm() {
   const [state, dispatch] = useAppState();
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isCorrect, setIsCorrect] = useState(false);
+  const [funFact, setFunFact] = useState("");
+  const [trivia, setTrivia] = useState("");
+
+  const { submitGuess, fetchFunFact } = useGame();
   const {
     register,
     handleSubmit,
@@ -46,19 +55,41 @@ function GuessForm() {
   //   }
   // };
 
-  const handleFormSubmit = (data: GuessFormData) => {
-    // API CALL HERE
+
+
+  const handleFormSubmit = async (data: GuessFormData) => {
+    const result = await submitGuess(
+      data.guess,
+      state?.selectedCountry,
+      state.clues.length
+    );
+
+    if (result) {
+      setIsCorrect(result.correct);
+      setFunFact(result.funFact);
+      setTrivia(result.trivia);
+      setIsPopupOpen(true);
+    }
 
     reset();
   };
 
   return (
     <div className=" flex flex-col items-center gap-2">
+      {isPopupOpen && (
+        <GuessPopup
+          isOpen={isPopupOpen}
+          onClose={() => setIsPopupOpen(false)}
+          isCorrect={isCorrect}
+          funFact={funFact}
+          trivia={trivia}
+        />
+      )}
       {errors.guess && (
         <PixelBubble
           text={errors.guess.message ?? ""}
           direction="left"
-          className="text-red-500 "
+          className="text-red-500 font-minecraft"
           borderColor="#ef4444"
         />
       )}
@@ -68,14 +99,15 @@ function GuessForm() {
           {...register("guess")}
           type="text"
           placeholder="Enter city name"
-          className="rounded-md"
+          className="h-10 py-1 px-2 text-sm rounded-md  focus:ring-yellow-400"
           borderColor="#eab308"
         />
         <PixelButton
           type="submit"
           children="Guess"
           borderColor="white"
-          className="px-4 py-2 text-md font-bold tracking-wide btn-hover bg-yellow-500 shadow-lg transition transform hover:scale-110 hover:bg-yellow-400"
+          disabled={!state?.selectedCountry}
+          className="px-3 py-1 text-sm font-bold tracking-wide btn-hover bg-yellow-500 shadow-lg transition transform hover:scale-105 hover:bg-yellow-400"
         />
       </form>
     </div>

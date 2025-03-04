@@ -7,6 +7,10 @@ export function useGame() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const showToast = (message: string, type: "success" | "error") => {
+    dispatch({ type: "SET_TOAST", payload: { visible: true, message, type } });
+  };
+
   const getAllCountries = async () => {
     try {
       setLoading(true);
@@ -55,19 +59,49 @@ export function useGame() {
     }
   };
 
-  const submitGuess = async (city: string, correctCity: string) => {
+  const submitGuess = async (
+    city: string,
+    country: string,
+    cluesUsed: number
+  ) => {
     try {
       setLoading(true);
       setError(null);
-      const isCorrect = city.toLowerCase() === correctCity.toLowerCase();
 
-      dispatch({ type: "SET_GUESS_RESULT", payload: {} });
+      const response = await globalApiCallHelper({
+        api: "/game/submit-answer",
+        method: "POST",
+        body: JSON.stringify({
+          userId: state?.user?.id || null,
+          country,
+          answer: city,
+          cluesUsed,
+        }),
+      });
 
-      if (isCorrect) {
-        dispatch({ type: "SET_SCORE", payload: {} });
-      } else {
-        dispatch({ type: "SET_SCORE", payload: {} });
+      if (!response) {
+        showToast("No response from server", "error");
+        return;
       }
+
+      const { correct, message, newScore } = response;
+
+      dispatch({
+        type: "SET_GUESS_RESULT",
+        payload: { correct, message },
+      });
+
+      if (correct) {
+        dispatch({ type: "INCREMENT_CORRECT", payload: {} });
+      } else {
+        dispatch({ type: "INCREMENT_INCORRECT", payload: {} });
+      }
+
+      dispatch({
+        type: "SET_SCORE",
+        payload: newScore,
+      });
+      return response;
     } catch (err) {
       setError("Error processing guess");
     } finally {

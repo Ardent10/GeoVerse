@@ -9,6 +9,8 @@ export const initialState = {
   guessedCities: null,
   isMuted: false,
   score: 0,
+  correctAnswer:0,
+  incorrectAnswer:0,
   countriesList: [],
   clues: [],
   selectedCountry: "",

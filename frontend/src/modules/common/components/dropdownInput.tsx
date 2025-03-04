@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Input,
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
-  Button,
   DropdownMenuSeparator,
 } from "pixel-retroui";
 import { PixelBubble } from "@modules/common/components/bubble";
@@ -44,22 +43,20 @@ const DropdownInput: React.FC<DropdownInputProps> = ({
         control={control}
         render={({ field }) => (
           <div className="relative flex">
-            <DropdownMenu className="w-full ">
-              <DropdownMenuTrigger type="button">
+            <DropdownMenu className="w-full">
+              <DropdownMenuTrigger type="button" className="rounded-md">
                 <Input
                   {...field}
                   type="text"
                   placeholder={placeholder}
-                  className="rounded-md w-full"
-                  borderColor="#eab308"
+                  className="h-8 text-sm rounded-md  focus:ring-yellow-400"
                   value={field.value}
-                  onChange={(e) => {
-                    field.onChange(e.target.value);
-                  }}
+                  onChange={(e) => field.onChange(e.target.value)}
+                  borderColor="#eab308"
                 />
               </DropdownMenuTrigger>
 
-              <DropdownMenuContent className=" bg-yellow-400 max-h-[18rem] overflow-y-scroll">
+              <DropdownMenuContent className="bg-yellow-400 max-h-[14rem] overflow-y-auto text-sm p-1">
                 {options.length > 0 ? (
                   options.map((option) => (
                     <div
@@ -68,6 +65,7 @@ const DropdownInput: React.FC<DropdownInputProps> = ({
                         field.onChange(option);
                         if (onSelect) onSelect(option);
                       }}
+                      className="p-1 cursor-pointer hover:bg-yellow-500 rounded-md"
                     >
                       <DropdownMenuItem>{option}</DropdownMenuItem>
                       <DropdownMenuSeparator />

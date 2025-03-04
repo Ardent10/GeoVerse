@@ -19,7 +19,7 @@ export const PixelButton: React.FC<ButtonProps> = ({
   type,
   className,
   borderColor,
-  disabled
+  disabled,
 }) => {
   const [state] = useAppState();
   const clickSound = useRef<HTMLAudioElement | null>(null);
@@ -44,7 +44,11 @@ export const PixelButton: React.FC<ButtonProps> = ({
   return (
     <Button
       disabled={disabled}
-      className={className}
+      className={`px-3 py-1 text-sm font-bold tracking-wide transition transform ${
+        disabled
+          ? "bg-gray-400 opacity-50 cursor-not-allowed"
+          : "btn-hover bg-yellow-500 shadow-lg hover:scale-105 hover:bg-yellow-400"
+      } ${className}`}
       type={type}
       color={color}
       onClick={handleClick}
