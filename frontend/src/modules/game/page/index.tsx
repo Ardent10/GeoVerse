@@ -6,6 +6,7 @@ import { Toast } from "@modules/common/components/toast";
 
 export function Game() {
   const [state] = useAppState();
+  console.log("GAME=->", state?.toast);
   return (
     <Layout>
       {state?.toast?.visibile && (

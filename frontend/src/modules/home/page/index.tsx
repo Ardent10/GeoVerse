@@ -11,6 +11,7 @@ export function Home() {
   useEffect(() => {
     playSound("/sounds/game.mp3", true);
   }, []);
+  console.log("HOME=->",state?.toast?.visibile);
 
   return (
     <div className="relative h-screen w-full overflow-hidden bg-gradient-to-b from-white to-blue-600">
