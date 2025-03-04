@@ -7,29 +7,25 @@ import { useGame } from "../hooks";
 
 interface GuessPopupProps {
   isOpen: boolean;
-  onClose: () => void;
   isCorrect: boolean;
-  funFact: string;
-  trivia: string;
+  onClose: () => void;
 }
 
 const ResultPopup: React.FC<GuessPopupProps> = ({
   isOpen,
-  onClose,
   isCorrect,
-  funFact,
-  trivia,
+  onClose,
 }) => {
-  const [state] = useAppState();
+  const [state, dispatch] = useAppState();
   const { fetchFunFact } = useGame();
   const winSound = useRef<HTMLAudioElement | null>(null);
   const loseSound = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    if (state?.selectedCountry && isOpen) {
-      fetchFunFact(state.selectedCity);
+    if (state?.guessedCity && isOpen) {
+      fetchFunFact(state.guessedCity);
     }
-  }, [state?.selectedCountry, state.showPopup]);
+  }, [state?.guessedCity, state.showPopup]);
 
   useEffect(() => {
     winSound.current = new Audio("/sounds/win.mp3");
@@ -44,29 +40,41 @@ const ResultPopup: React.FC<GuessPopupProps> = ({
     }
   }, [isOpen, isCorrect]);
 
+  function onCloseResultPopup() {
+    dispatch({
+      type: "RESET_GAME",
+      payload: {},
+    });
+    onClose();
+  }
+
   return (
     <PixelPopup
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={onCloseResultPopup}
       title={isCorrect ? "🎉 Correct!" : "😢 Incorrect!"}
-      className="max-w-md p-6 text-center"
+      className=" p-6 text-center"
     >
-      {isCorrect && <ConfettiBoom mode="fall"/>}
-
       <div className="mt-4 text-gray-700">
         <p className="text-lg font-semibold">Fun Fact:</p>
-        <p className="text-sm">{funFact}</p>
+        <p className="text-sm">{state?.guessedCityResult?.funFact}</p>
 
         <p className="mt-3 text-lg font-semibold">Did You Know?</p>
-        <p className="text-sm">{trivia}</p>
+        <p className="text-sm">{state?.guessedCityResult?.trivia}</p>
       </div>
 
-      <div className="mt-6">
+      <div className="flex gap-2 mt-6">
         <PixelButton
-          onClick={onClose}
+          onClick={onCloseResultPopup}
+          className="px-4 py-2 bg-blue-500 text-white rounded-md"
+        >
+          Play Again
+        </PixelButton>
+        <PixelButton
+          onClick={onCloseResultPopup}
           className="px-4 py-2 bg-yellow-500 text-white rounded-md"
         >
-          Close
+          Next
         </PixelButton>
       </div>
     </PixelPopup>

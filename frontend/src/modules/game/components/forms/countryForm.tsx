@@ -7,6 +7,8 @@ import { useAppState } from "@store/index";
 import { useEffect } from "react";
 import { useGame } from "@modules/game/hooks";
 import { PixelBubble } from "@modules/common/components/bubble";
+import ConfettiBoom from "react-confetti-boom";
+import { ChatArea } from "@modules/common/components/chatArea";
 
 function CountryForm() {
   const [state, dispatch] = useAppState();
@@ -26,8 +28,6 @@ function CountryForm() {
   }, []);
 
   async function handleFormSubmit(data: CountryFormData) {
-    console.log("Selected Country =>", data.country);
-
     dispatch({
       type: "SET_SELECTED_COUNTRY",
       payload: { selectedCountry: data.country },
@@ -37,13 +37,6 @@ function CountryForm() {
     await getCluesByCountry(data.country, 0);
 
     reset();
-  }
-
-  async function handleRevealMoreClues() {
-    if (!state.selectedCountry) return;
-
-    const nextClueIndex = state.clues.length;
-    await getCluesByCountry(state.selectedCountry, nextClueIndex);
   }
 
   return (
@@ -76,64 +69,7 @@ function CountryForm() {
         </div>
       </form>
 
-      <div className="flex flex-col items-start justify-start mt-4 w-full">
-        {/* User Message (Selected Country) */}
-        {state?.selectedCountry && (
-          <div className="flex justify-end items-center gap-2 w-full">
-            <PixelBubble
-              text={state.selectedCountry}
-              direction="right"
-              className="text-sm font-minecraft"
-              borderColor="#eab308"
-            />
-            <img
-              src="/assets/common/user.png"
-              alt="User"
-              height={50}
-              width={50}
-              className="rounded-full"
-            />
-          </div>
-        )}
-
-        {/* Bot Messages (Clues) */}
-        {state.clues?.length > 0 && (
-          <div className="flex flex-col items-start gap-4 w-full">
-            {state.clues.map(
-              ({ clue, index }: { clue: string; index: number }) => (
-                <div key={index} className="flex items-center gap-2 w-full">
-                  <img
-                    src="/assets/common/bot.png"
-                    alt="Bot"
-                    height={50}
-                    width={50}
-                    className="rounded-full bg-yellow-400 p-2"
-                  />
-                  <PixelBubble
-                    text={clue}
-                    direction="left"
-                    className="text-sm font-minecraft"
-                    borderColor="#eab308"
-                  />
-                </div>
-              )
-            )}
-
-            {state?.clues?.length < 2 && (
-              <div className="flex justify-center w-full">
-                <PixelButton
-                  onClick={handleRevealMoreClues}
-                  borderColor="white"
-                  className="mt-2 px-4 py-2 btn-hover bg-yellow-500 shadow-lg transition transform hover:scale-110 hover:bg-yellow-400"
-                  disabled={state.clues.length >= 2}
-                >
-                  Reveal More Clue
-                </PixelButton>
-              </div>
-            )}
-          </div>
-        )}
-      </div>
+      <ChatArea />
     </div>
   );
 }

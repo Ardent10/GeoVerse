@@ -53,6 +53,18 @@ const globalReducers = (state: State, action: Action) => {
         toast: action.payload,
       };
     }
+    case "SET_GUESSED_CITY": {
+      return {
+        ...state,
+        ...action.payload,
+      };
+    }
+    case "SET_GUESSED_CITY_RESULT": {
+      return {
+        ...state,
+        ...action.payload,
+      };
+    }
     case "SET_SELECTED_COUNTRY": {
       return {
         ...state,
@@ -73,17 +85,16 @@ const globalReducers = (state: State, action: Action) => {
         clues: [],
       };
     }
-    case "INCREMENT_CORRECT":
-      return {
-        ...state,
-        correctAnswer: state.correctAnswer + 1,
-      };
 
-    case "INCREMENT_INCORRECT":
+    case "RESET_GAME": {
       return {
         ...state,
-        incorrectAnswer: state.incorrectAnswer + 1,
+        selectedCountry: initialState.selectedCountry,
+        clues: initialState.clues,
+        guessedCity: initialState.guessedCity,
+        guessedCityResult: initialState.guessedCityResult,
       };
+    }
 
     case "LOGOUT": {
       return {

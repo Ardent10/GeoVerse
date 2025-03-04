@@ -11,9 +11,12 @@ export function Score() {
     <div className="flex justify-center">
       <PixelButton
         borderColor="white"
-        className="bg-yellow-400"
+        className="bg-yellow-400 py-2 md:p-0 text-xs md:text-lg"
         children={
-          <span className="text-lg font-semibold">Score: {state?.score}</span>
+          <>
+            <span className="block md:hidden">{state?.score}</span>
+            <span className="hidden md:block">Score: {state?.score}</span>
+          </>
         }
         onClick={() => setIsOpen(true)}
       />

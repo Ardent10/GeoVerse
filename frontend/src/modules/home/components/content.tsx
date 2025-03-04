@@ -46,7 +46,6 @@ export function HeroContent() {
             onClick={() => {
               !state?.user?.id ? setIsAuthOpen(true) : navigate("/game");
             }}
-           
           >
             ▶ Start Adventure
           </Button>

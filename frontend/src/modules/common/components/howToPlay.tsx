@@ -2,18 +2,31 @@ import React, { useState } from "react";
 import { PixelButton } from "@modules/common/components/button";
 import { PixelPopup } from "@modules/common/components/popup";
 
-export function HowToPlay() {
+interface HowToPlayProps {
+  variant?: "text" | "btn";
+}
+export function HowToPlay({ variant = "btn" }: HowToPlayProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <div className="flex justify-center">
-      <PixelButton
-        onClick={() => setIsOpen(true)}
-        borderColor="white"
-        className="text-md  btn-hover bg-yellow-400 shadow-lg transition transform hover:scale-110 hover:bg-yellow-300"
-      >
-        <img src="/assets/common/how.png" alt="User" height={20} width={20} />
-      </PixelButton>
+      {variant === "text" ? (
+        <div
+          onClick={() => setIsOpen(true)}
+          className="flex items-center gap-2"
+        >
+          <img src="/assets/common/how.png" alt="User" height={15} width={15} />
+          How to play
+        </div>
+      ) : (
+        <PixelButton
+          onClick={() => setIsOpen(true)}
+          borderColor="white"
+          className="text-md   btn-hover bg-yellow-400 shadow-lg transition transform hover:scale-110 hover:bg-yellow-300"
+        >
+          <img src="/assets/common/how.png" alt="User" height={15} width={15} />
+        </PixelButton>
+      )}
 
       {isOpen && (
         <PixelPopup
@@ -35,10 +48,12 @@ export function HowToPlay() {
             <h2 className="text-lg font-bold mt-4 mb-2">Scoring System</h2>
             <ul className="list-disc pl-4 space-y-1">
               <li>
-                Correct on 1st clue: <strong className="text-green-400">+10 points</strong>
+                Correct on 1st clue:{" "}
+                <strong className="text-green-400">+10 points</strong>
               </li>
               <li>
-                Correct on 2nd clue: <strong className="text-yellow-400">+5 points</strong>
+                Correct on 2nd clue:{" "}
+                <strong className="text-yellow-400">+5 points</strong>
               </li>
               <li>
                 Wrong guess: <strong className="text-red-400">-5 points</strong>

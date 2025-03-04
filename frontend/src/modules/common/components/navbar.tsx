@@ -12,17 +12,21 @@ export function Navbar() {
   const [isAuthOpen, setIsAuthOpen] = useState(false);
 
   return (
-    <nav className="flex items-center justify-between px-12 py-3  bg-blue-600 text-white h-16 flex-grow-0">
+    <nav className="flex items-center justify-between px-12 py-3 bg-blue-600 text-white h-16">
       <AuthModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
 
       <Logo className="h-8 w-8" />
 
-      <Heading className="ml-32 text-xl md:text-2xl font-bold drop-shadow-lg   text-yellow-400 heading" />
+      <Heading className="ml-32 text-xl md:text-2xl font-bold drop-shadow-lg text-yellow-400 heading" />
 
-      <div className="flex items-center gap-2 ">
+      <div className="flex items-center gap-4 md:gap-2">
         <Score />
-        <HowToPlay />
-        <SoundToggleButton />
+
+        <div className="hidden md:flex gap-2">
+          <HowToPlay />
+          <SoundToggleButton />
+        </div>
+
         <UserProfile />
       </div>
     </nav>

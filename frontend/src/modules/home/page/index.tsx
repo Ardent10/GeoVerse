@@ -11,11 +11,10 @@ export function Home() {
   useEffect(() => {
     playSound("/sounds/game.mp3", true);
   }, []);
-  console.log("HOME=->",state?.toast?.visibile);
 
   return (
     <div className="relative h-screen w-full overflow-hidden bg-gradient-to-b from-white to-blue-600">
-      {state?.toast?.visibile && (
+      {state?.toast?.visible && (
         <Toast message={state?.toast?.message} type={state?.toast.type} />
       )}
       <div className="absolute inset-0 bg-[url('https://cdn.vectorstock.com/i/500p/16/64/cloudy-night-sky-pixel-art-trendy-background-vector-49391664.jpg')] bg-cover bg-center" />

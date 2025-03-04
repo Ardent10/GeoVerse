@@ -51,7 +51,15 @@ export function useGame() {
         api: `/game/fun-fact/${city}`,
       });
 
-      dispatch({ type: "SET_FUN_FACT", payload: response.funFact });
+      dispatch({
+        type: "SET_GUESSED_CITY_RESULT",
+        payload: {
+          guessedCityResult: {
+            funFact: response.funFact,
+            trivia: response.trivia,
+          },
+        },
+      });
     } catch (err) {
       setError("Failed to fetch fun fact");
     } finally {
@@ -90,12 +98,6 @@ export function useGame() {
         type: "SET_GUESS_RESULT",
         payload: { correct, message },
       });
-
-      if (correct) {
-        dispatch({ type: "INCREMENT_CORRECT", payload: {} });
-      } else {
-        dispatch({ type: "INCREMENT_INCORRECT", payload: {} });
-      }
 
       dispatch({
         type: "SET_SCORE",

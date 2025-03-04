@@ -23,7 +23,7 @@ export function Toast({ message, type, duration = 3000, onClose }: ToastProps) {
           payload: { visible: false, message: "", type: "" },
         });
         if (onClose) onClose();
-      }, 3000); 
+      }, 3000);
 
       return () => clearTimeout(timer);
     }
@@ -36,7 +36,8 @@ export function Toast({ message, type, duration = 3000, onClose }: ToastProps) {
         animate={{ opacity: 1, x: 0, y: 0 }}
         exit={{ opacity: 0, x: 50, y: 50 }}
         transition={{ duration: 0.3, ease: "easeOut" }}
-        className="fixed bottom-5 right-5 w-80"
+        id="toast"
+        className="fixed bottom-5 right-5 w-80 z-10"
       >
         <Card
           borderColor={type === "success" ? "green" : "red"}

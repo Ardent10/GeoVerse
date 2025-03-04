@@ -6,15 +6,14 @@ import { PixelBubble } from "@modules/common/components/bubble";
 import { guessForm, GuessFormData } from "@utils/validations";
 import { useAppState } from "@store/index";
 import { useGame } from "@modules/game/hooks";
-import { useEffect, useState } from "react";
-import GuessPopup from "../resultPopup";
+import { useState } from "react";
+import ResultPopup from "../resultPopup";
+import ConfettiBoom from "react-confetti-boom";
 
 function GuessForm() {
   const [state, dispatch] = useAppState();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
-  const [funFact, setFunFact] = useState("");
-  const [trivia, setTrivia] = useState("");
 
   const { submitGuess, fetchFunFact } = useGame();
   const {
@@ -55,9 +54,11 @@ function GuessForm() {
   //   }
   // };
 
-
-
   const handleFormSubmit = async (data: GuessFormData) => {
+    dispatch({
+      type: "SET_GUESSED_CITY",
+      payload: { guessedCity: data?.guess },
+    });
     const result = await submitGuess(
       data.guess,
       state?.selectedCountry,
@@ -66,8 +67,6 @@ function GuessForm() {
 
     if (result) {
       setIsCorrect(result.correct);
-      setFunFact(result.funFact);
-      setTrivia(result.trivia);
       setIsPopupOpen(true);
     }
 
@@ -77,13 +76,22 @@ function GuessForm() {
   return (
     <div className=" flex flex-col items-center gap-2">
       {isPopupOpen && (
-        <GuessPopup
-          isOpen={isPopupOpen}
-          onClose={() => setIsPopupOpen(false)}
-          isCorrect={isCorrect}
-          funFact={funFact}
-          trivia={trivia}
-        />
+        <>
+          {isCorrect && (
+            <ConfettiBoom
+              particleCount={200}
+              shapeSize={20}
+              fadeOutHeight={1}
+              colors={["#002dfa", "#ff4c00", "#f7f600", "#00ff80"]}
+              mode="fall"
+            />
+          )}
+          <ResultPopup
+            isOpen={isPopupOpen}
+            isCorrect={isCorrect}
+            onClose={() => setIsPopupOpen(false)}
+          />
+        </>
       )}
       {errors.guess && (
         <PixelBubble

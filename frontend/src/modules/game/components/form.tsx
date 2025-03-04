@@ -11,7 +11,7 @@ export function FormWrapper() {
         <CountryForm />
       </div>
 
-      <div className="w-full">
+      <div className="w-full ">
         <h2 className="text-sm font-semibold text-yellow-400 text-center mb-2">
           Guess the City
         </h2>

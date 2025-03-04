@@ -6,14 +6,20 @@ export const initialState = {
     token: null,
   },
   isLoading: false,
-  guessedCities: null,
+  guessedCity: null,
+  guessedCityResult: {
+    funFact: null,
+    trivia: null,
+  },
   isMuted: false,
   score: 0,
-  correctAnswer:0,
-  incorrectAnswer:0,
+  correctAnswer: 0,
+  incorrectAnswer: 0,
   countriesList: [],
+  
   clues: [],
   selectedCountry: "",
+
   toast: {
     visible: false,
     message: "",
