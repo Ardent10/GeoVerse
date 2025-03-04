@@ -63,7 +63,7 @@ const ResultPopup: React.FC<GuessPopupProps> = ({
         <p className="text-sm">{state?.guessedCityResult?.trivia}</p>
       </div>
 
-      <div className="flex gap-2 mt-6">
+      <div className="flex justify-center gap-2 mt-6">
         <PixelButton
           onClick={onCloseResultPopup}
           className="px-4 py-2 bg-blue-500 text-white rounded-md"

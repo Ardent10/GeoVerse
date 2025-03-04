@@ -20,6 +20,8 @@ const getClue = (country: string, clueIndex: number) => {
   return { clue: cityData?.clues[clueIndex] };
 };
 
+let guestScore = { score: 0, correctAnswer: 0, incorrectAnswer: 0 };
+
 const validateAnswer = async (
   userId: string | null,
   country: string,
@@ -40,21 +42,28 @@ const validateAnswer = async (
   const scoreChange = isCorrect ? 10 + scorePenalty : -5;
 
   if (user) {
-    // Update user stats only if they exist
+    // Update user stats in database
     user.score = (user.score || 0) + scoreChange;
     user.correct = (user.correct || 0) + (isCorrect ? 1 : 0);
     user.incorrect = (user.incorrect || 0) + (isCorrect ? 0 : 1);
     await user.save();
+  } else {
+    // Update guest user stats in memory
+    guestScore.score += scoreChange;
+    guestScore.correctAnswer += isCorrect ? 1 : 0;
+    guestScore.incorrectAnswer += isCorrect ? 0 : 1;
   }
 
   return {
     correct: isCorrect,
     message: isCorrect ? "🎉 Correct!" : "😢 Incorrect!",
-    newScore: {
-      score: user?.score,
-      correctAnswer: user?.correct,
-      incorrectAnswer: user?.incorrect,
-    },
+    newScore: user
+      ? {
+          score: user.score,
+          correctAnswer: user.correct,
+          incorrectAnswer: user.incorrect,
+        }
+      : guestScore,
   };
 };
 

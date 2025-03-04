@@ -18,12 +18,9 @@ interface CountryFeature {
 export function GameGlobe() {
   const [state, dispatch] = useAppState();
   const globeRef = useRef<GlobeInstance | null>(null);
-  const markerRef = useRef<THREE.Sprite | null>(null);
   const [countriesData, setCountriesData] = useState<CountryFeature[] | null>(
     null
   );
-  const [highlightedCountry, setHighlightedCountry] =
-    useState<CountryFeature | null>(null);
 
   useEffect(() => {
     const globeContainer = document.getElementById("globe-container");
@@ -38,8 +35,13 @@ export function GameGlobe() {
       .hexPolygonResolution(3)
       .hexPolygonMargin(0.3)
       .hexPolygonUseDots(true)
-      .hexPolygonColor(() => {
-        return highlightedCountry ? "#4285F4" : "#1e293b";
+      .hexPolygonColor((d: any) => {
+        // Highlight selected country or default color
+        return state.selectedCountry &&
+          d.properties.ADMIN.toLowerCase() ===
+            state.selectedCountry.toLowerCase()
+          ? "#4285F4"
+          : "#1e293b";
       })
       // @ts-ignore
       .hexPolygonLabel(
@@ -70,11 +72,9 @@ export function GameGlobe() {
     globeRef.current = world;
 
     dispatch({
-      type: "setGlobeInstance",
+      type: "SET_GLOBE_INSTANCE",
       payload: world,
     });
-
-    // Cloud Layer
     const CLOUDS_IMG_URL = "/clouds.png";
     const CLOUDS_ALT = 0.004;
     const CLOUDS_ROTATION_SPEED = -0.006;
@@ -95,7 +95,6 @@ export function GameGlobe() {
         requestAnimationFrame(rotateClouds);
       })();
     });
-
     // Load country data
     fetch(
       "//unpkg.com/globe.gl/example/datasets/ne_110m_admin_0_countries.geojson"
@@ -110,112 +109,47 @@ export function GameGlobe() {
     return () => {
       globeRef.current = null;
     };
-  }, [highlightedCountry]);
+  }, []);
 
-  /** 📍 Pinpoint the guessed location when state.guessedCity updates */
-  // useEffect(() => {
-  //   if (!globeRef.current || !state.guessedCity || !countriesData) return;
+  // Handle Country Selection
+  useEffect(() => {
+    if (!globeRef.current || !state.selectedCountry || !countriesData) return;
 
-  //   const { latitude, longitude, city, country } = state.guessedCity;
-  //   const globeRadius = globeRef.current.getGlobeRadius();
+    // Find the selected country
+    const countryFeature = countriesData.find(
+      (feature) =>
+        feature.properties.ADMIN.toLowerCase() ===
+        state.selectedCountry.toLowerCase()
+    );
 
-  //   // Find the country in the GeoJSON data
-  //   const countryFeature = countriesData.find(
-  //     (feature) =>
-  //       feature.properties.ADMIN.toLowerCase() === country.toLowerCase()
-  //   );
+    if (countryFeature) {
+      // Stop auto-rotation
+      const controls = globeRef.current.controls();
+      controls.autoRotate = false;
 
-  //   // Highlight the country by setting state
-  //   if (countryFeature) {
-  //     setHighlightedCountry(countryFeature);
-  //   }
+      // Calculate country center and move view
+      const { geometry } = countryFeature;
+      const centerCoords = geometry.coordinates[0]
+        .reduce(
+          (acc: number[], coord: number[]) => [
+            acc[0] + coord[0],
+            acc[1] + coord[1],
+          ],
+          [0, 0]
+        )
+        .map((sum: number) => sum / geometry.coordinates[0].length);
 
-  //   // Remove previous marker
-  //   if (markerRef.current) {
-  //     globeRef.current.scene().remove(markerRef.current);
-  //   }
-
-  //   // Add a label for the guessed city and country
-  //   globeRef.current
-  //     .pointOfView({ lat: latitude, lng: longitude, altitude: 2 }, 2000)
-  //     .labelsData([
-  //       { lat: latitude, lng: longitude, text: `${city}, ${country}` },
-  //     ])
-  //     .labelText("text")
-  //     .labelSize(1.8)
-  //     .labelColor(() => "white")
-  //     .labelDotRadius(0)
-  //     .labelResolution(5);
-
-  //   // Create a sprite using location.png
-  //   const markerLoader = new THREE.TextureLoader();
-  //   markerLoader.load("/assets/common/location.png", (texture) => {
-  //     const spriteMaterial = new THREE.SpriteMaterial({
-  //       map: texture,
-  //       transparent: true,
-  //       depthWrite: false,
-  //     });
-
-  //     const sprite = new THREE.Sprite(spriteMaterial);
-  //     // Scale the sprite appropriately
-  //     sprite.scale.set(8, 8, 1);
-
-  //     // Position marker slightly above the globe surface
-  //     sprite.position.setFromSphericalCoords(
-  //       globeRadius * 1.03, // 1.03 = Slightly above surface
-  //       THREE.MathUtils.degToRad(90 - latitude),
-  //       THREE.MathUtils.degToRad(longitude)
-  //     );
-
-  //     markerRef.current = sprite; // Store marker reference
-
-  //     // Add marker to scene
-  //     globeRef?.current?.scene().add(sprite);
-  //   });
-
-  //   // Add country info using HTML overlay
-  //   const countryInfoDiv = document.createElement("div");
-  //   countryInfoDiv.id = "country-info";
-  //   countryInfoDiv.style.position = "absolute";
-  //   countryInfoDiv.style.bottom = "20px";
-  //   countryInfoDiv.style.left = "20px";
-  //   countryInfoDiv.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
-  //   countryInfoDiv.style.color = "white";
-  //   countryInfoDiv.style.padding = "10px";
-  //   countryInfoDiv.style.borderRadius = "5px";
-
-  //   // If we have population data from GeoJSON
-  //   let populationInfo = "";
-  //   if (countryFeature && countryFeature.properties.POP_EST) {
-  //     populationInfo = `<p><strong>Population:</strong> ${countryFeature.properties.POP_EST.toLocaleString()}</p>`;
-  //   }
-
-  //   countryInfoDiv.innerHTML = `
-  //     <h3>${city}, ${country}</h3>
-  //     ${populationInfo}
-  //     <p><em>Correctly guessed! 🎉</em></p>
-  //   `;
-
-  //   // Remove any existing info div
-  //   const existingInfo = document.getElementById("country-info");
-  //   if (existingInfo) {
-  //     existingInfo.remove();
-  //   }
-
-  //   // Add the info div to the container
-  //   const container = document.getElementById("globe-container");
-  //   if (container) {
-  //     container.appendChild(countryInfoDiv);
-  //   }
-
-  //   // Update hexagon colors to highlight the guessed country
-  //   if (countryFeature && globeRef.current) {
-  //     globeRef.current.hexPolygonColor((d: any) => {
-  //       // Highlight the country that was guessed
-  //       return d === countryFeature ? "#4285F4" : "#1e293b";
-  //     });
-  //   }
-  // }, [state.guessedCity, countriesData]);
+      // Move to country
+      globeRef.current.pointOfView(
+        {
+          lat: centerCoords[1],
+          lng: centerCoords[0],
+          altitude: 2,
+        },
+        2000
+      );
+    }
+  }, [state.selectedCountry, countriesData]);
 
   return (
     <div
