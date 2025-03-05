@@ -4,6 +4,7 @@ const authSchema = z.object({
     .string()
     .min(3, "Username must be at least 3 characters")
     .optional(),
+  invited: z.boolean().optional().default(false),
   email: z.string().min(1, "Email is required").email("Invalid email format"),
   password: z
     .string()

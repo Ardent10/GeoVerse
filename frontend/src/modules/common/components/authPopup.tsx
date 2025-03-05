@@ -17,7 +17,7 @@ interface AuthModalProps {
 
 function AuthForm({ onClose, setShowAuthForm }: AuthModalProps) {
   const [isSignUp, setIsSignUp] = useState(false);
-  const { login, signup,loading } = useAuth();
+  const { login, signup, loading } = useAuth();
   const {
     register,
     handleSubmit,
@@ -28,15 +28,16 @@ function AuthForm({ onClose, setShowAuthForm }: AuthModalProps) {
   });
 
   async function onSubmit(data: AuthFormData) {
-    if (isSignUp) {
-      await signup({
-        username: data?.username,
-        email: data.email,
-        password: data.password,
-      });
-    } else {
-      await login({ email: data.email, password: data.password });
-    }
+    console.log("data=>", data);
+    // if (isSignUp) {
+    //   await signup({
+    //     username: data?.username,
+    //     email: data.email,
+    //     password: data.password,
+    //   });
+    // } else {
+    //   await login({ email: data.email, password: data.password });
+    // }
     onClose();
   }
 
@@ -95,6 +96,17 @@ function AuthForm({ onClose, setShowAuthForm }: AuthModalProps) {
           <p className="text-red-500 text-sm">{errors.password.message}</p>
         )}
       </div>
+
+      {isSignUp && (
+        <div className="flex items-center gap-2">
+          <Input
+            {...register("invited")}
+            type="checkbox"
+            className="w-6 h-6 accent-yellow-500"
+          />
+          <label>I was invited</label>
+        </div>
+      )}
 
       <PixelButton
         className="px-4 py-2 text-md font-bold tracking-wide btn-hover bg-yellow-500 shadow-lg transition transform hover:scale-110 hover:bg-yellow-400"
