@@ -13,7 +13,7 @@ export function Share() {
   ); // Placeholder
 
   useEffect(() => {
-    // Generate a unique shareable link
+
     const baseUrl = window.location.origin;
     const uniqueLink = `${baseUrl}/invite?user=${encodeURIComponent(
       state?.user?.username
@@ -36,7 +36,6 @@ export function Share() {
 
   return (
     <>
-      {/* Share Button */}
       <PixelButton
         borderColor="white"
         className="text-md font-bold tracking-wide bg-yellow-500 shadow-lg transition transform hover:scale-110 hover:bg-yellow-400"
@@ -50,7 +49,6 @@ export function Share() {
         />
       </PixelButton>
 
-      {/* Share Popup */}
       {showShareModal && (
         <PixelPopup
           isOpen={showShareModal}
@@ -64,27 +62,19 @@ export function Share() {
             </p>
 
             <div className="flex flex-col space-y-4 mt-4">
-              <button
+              <PixelButton
                 onClick={copyToClipboard}
                 className="p-2 bg-gray-700 text-white rounded-md hover:bg-gray-800 transition"
-              >
-                📋 Copy Invite Link
-              </button>
+                children="Copy Invite Link"
+              />
 
-              <button
+              <PixelButton
                 onClick={shareOnWhatsApp}
                 className="p-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition"
-              >
-                📲 Share on WhatsApp
-              </button>
+                children="Share on WhatsApp"
+              />
             </div>
 
-            <PixelButton
-              onClick={() => {}}
-              className="mt-4 bg-red-500 hover:bg-red-600 text-white"
-            >
-              Challenge a Friend
-            </PixelButton>
             <PixelButton
               onClick={closeModal}
               className="mt-4 bg-red-500 hover:bg-red-600 text-white"

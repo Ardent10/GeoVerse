@@ -1,15 +1,23 @@
 import { AuthModal } from "@modules/common/components/authPopup";
-import { Toast } from "@modules/common/components/toast";
 import { useAppState } from "@store/index";
+import { playSound, stopSound } from "@utils/playSound";
 import { motion } from "framer-motion";
 import { Button } from "pixel-retroui";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
 export function HeroContent() {
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [state, dispatch] = useAppState();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (state?.playGameSound && !state?.isMuted) {
+      playSound("/sounds/interstellar.mp3", true);
+    } else {
+      stopSound();
+    }
+  }, [state?.playGameSound, state?.isMuted]);
 
   return (
     <div className="w-full flex justify-center -mt-28 h-full">
@@ -38,16 +46,25 @@ export function HeroContent() {
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ delay: 1, duration: 0.5 }}
-          className="mt-8"
+          className="mt-8 flex items-center"
         >
           <Button
             borderColor="#ffff"
-            className="px-4 py-2 text-md font-bold tracking-wide btn-hover bg-yellow-500 shadow-lg transition transform hover:scale-110 hover:bg-yellow-400"
+            className="flex items-center gap-2 px-4 py-2 text-md font-bold tracking-wide btn-hover bg-yellow-500 shadow-lg transition transform hover:scale-110 hover:bg-yellow-400"
             onClick={() => {
+              dispatch({
+                type: "SET_PLAY_GAME_SOUND",
+                payload: { playGameSound: true },
+              });
               !state?.user?.id ? setIsAuthOpen(true) : navigate("/game");
             }}
           >
-            ▶ Start Adventure
+            <img
+              src="/assets/common/play1.png"
+              className="h-5 w-5"
+              alt="play"
+            />
+            Start Adventure
           </Button>
           <Button
             borderColor="#ffff"

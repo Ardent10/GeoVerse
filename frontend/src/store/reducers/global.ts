@@ -93,6 +93,7 @@ const globalReducers = (state: State, action: Action) => {
         clues: initialState.clues,
         guessedCity: initialState.guessedCity,
         guessedCityResult: initialState.guessedCityResult,
+        showCountryForm: false,
         resetGame: true,
       };
     }
@@ -100,6 +101,27 @@ const globalReducers = (state: State, action: Action) => {
       return {
         ...state,
         resetGame: false,
+      };
+    }
+
+    case "SET_PLAY_GAME_SOUND": {
+      return {
+        ...state,
+        ...action.payload,
+      };
+    }
+
+    case "SET_SHOW_COUNTRY_FORM": {
+      return {
+        ...state,
+        ...action.payload,
+      };
+    }
+
+    case "SET_SHOW_INVITE_FORM": {
+      return {
+        ...state,
+        ...action.payload,
       };
     }
 

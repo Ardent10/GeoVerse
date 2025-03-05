@@ -51,25 +51,27 @@ function CountryForm() {
         />
       )}
 
-      <form onSubmit={handleSubmit(handleFormSubmit)} className="flex gap-2">
-        <div className="w-full">
-          <DropdownInput
-            name="country"
-            control={control}
-            options={state?.countriesList ?? []}
-            placeholder="Select or type a country"
-          />
-        </div>
-        <div>
-          <PixelButton
-            type="submit"
-            children="Select"
-            borderColor="white"
-            disabled={state?.selectedCountry}
-            className="px-4 py-1 btn-hover bg-yellow-500 shadow-lg transition transform hover:scale-110 hover:bg-yellow-400"
-          />
-        </div>
-      </form>
+      {!state.selectedCountry && (
+        <form onSubmit={handleSubmit(handleFormSubmit)} className="flex gap-2">
+          <div className="w-full">
+            <DropdownInput
+              name="country"
+              control={control}
+              options={state?.countriesList ?? []}
+              placeholder="Select or type a country"
+            />
+          </div>
+          <div>
+            <PixelButton
+              type="submit"
+              children="Select"
+              borderColor="white"
+              disabled={state?.selectedCountry}
+              className="px-4 py-1 btn-hover bg-yellow-500 shadow-lg transition transform hover:scale-110 hover:bg-yellow-400"
+            />
+          </div>
+        </form>
+      )}
       {loading && <PixelLoader variant="bg" />}
       <ChatArea />
     </div>

@@ -20,6 +20,8 @@ export const initialState = {
   clues: [],
   selectedCountry: "",
 
+  playGameSound: false,
+  showCountryForm: false,
   toast: {
     visible: false,
     message: "",

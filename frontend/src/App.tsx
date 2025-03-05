@@ -16,7 +16,7 @@ function App() {
     const clickSound = new Audio("/assets/mouseclick.wav");
 
     const playSound = (event: Event) => {
-      if (event.target instanceof HTMLButtonElement && !state.isMuted) {
+      if (event.target instanceof HTMLButtonElement) {
         clickSound.currentTime = 0;
         clickSound
           .play()
@@ -32,7 +32,7 @@ function App() {
   }, [state.isMuted]);
 
   console.log("state=>", state);
-  
+
   return (
     <Routes>
       <Route path="/" element={<Home />} />

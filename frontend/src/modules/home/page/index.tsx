@@ -8,10 +8,7 @@ import { useAppState } from "@store/index";
 
 export function Home() {
   const [state] = useAppState();
-  useEffect(() => {
-    playSound("/sounds/game.mp3", true);
-  }, []);
-
+  
   return (
     <div className="relative h-screen w-full overflow-hidden bg-gradient-to-b from-white to-blue-600">
       {state?.toast?.visible && (

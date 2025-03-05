@@ -1,5 +1,7 @@
 import { useAppState } from "@store/index";
+import { stopSound, playSound } from "@utils/playSound";
 import { Button } from "pixel-retroui";
+import { useEffect } from "react";
 
 interface SoundToggleButtonProps {
   variant?: "btn" | "text";
@@ -8,11 +10,17 @@ export function SoundToggleButton({ variant = "btn" }: SoundToggleButtonProps) {
   const [state, dispatch] = useAppState();
 
   const toggleSound = () => {
-    dispatch({
-      type: "SET_IS_MUTED",
-      payload: { isMuted: !state.isMuted },
-    });
+    const isMuted = !state?.isMuted;
+
+    dispatch({ type: "SET_IS_MUTED", payload: { isMuted } });
+
+    if (isMuted) {
+      stopSound();
+    } else {
+      playSound("/sounds/interstellar.mp3", state?.playGameSound);
+    }
   };
+
   return (
     <>
       {variant === "text" ? (

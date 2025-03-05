@@ -111,6 +111,44 @@ export function useGame() {
     }
   };
 
+  const challengeFriend = async (invitedUsername: string) => {
+    if (!invitedUsername) {
+      showToast("Please enter a username", "error");
+      return;
+    }
+
+    if (!state?.user?.username) {
+      showToast("You need to login to invite friend's.", "error");
+      return;
+    }
+
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await globalApiCallHelper({
+        api: "/auth/challenge",
+        method: "POST",
+        body: JSON.stringify({ invitedUsername }),
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (response.inviteLink) {
+        showToast("Challenge sent successfully!", "success");
+        return response.inviteLink;
+      } else {
+        showToast(response.message || "Failed to send challenge.", "error");
+      }
+    } catch (err) {
+      setError("Error sending challenge");
+      showToast("Failed to send challenge", "error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return {
     state,
     loading,
@@ -119,5 +157,6 @@ export function useGame() {
     fetchFunFact,
     submitGuess,
     getAllCountries,
+    challengeFriend,
   };
 }

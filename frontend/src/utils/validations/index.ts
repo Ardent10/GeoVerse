@@ -26,10 +26,15 @@ const countryFormSchema = z.object({
     .regex(/^[a-zA-Z\s]+$/, { message: "Only letters and spaces are allowed" }),
 });
 
+const inviteFormSchema = z.object({
+  username: z.string().min(1, "Please enter a username to invite."),
+});
+
 // Form Types
 type AuthFormData = z.infer<typeof authSchema>;
 type CountryFormData = z.infer<typeof countryFormSchema>;
 type GuessFormData = z.infer<typeof guessForm>;
+type inviteFormData = z.infer<typeof inviteFormSchema>;
 
-export { authSchema, guessForm, countryFormSchema };
-export type { AuthFormData, CountryFormData, GuessFormData };
+export { authSchema, guessForm, countryFormSchema, inviteFormSchema };
+export type { AuthFormData, CountryFormData, GuessFormData, inviteFormData };
