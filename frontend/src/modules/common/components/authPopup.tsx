@@ -33,6 +33,7 @@ function AuthForm({ onClose, setShowAuthForm }: AuthModalProps) {
         username: data?.username,
         email: data.email,
         password: data.password,
+        invited: data.invited,
       });
     } else {
       await login({ email: data.email, password: data.password });

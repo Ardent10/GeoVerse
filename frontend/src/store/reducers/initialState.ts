@@ -4,6 +4,7 @@ export const initialState = {
     username: null,
     email: null,
     token: null,
+    invitedBy: null,
   },
   isLoading: false,
   guessedCity: null,
@@ -18,10 +19,11 @@ export const initialState = {
   countriesList: [],
   resetGame: false,
   clues: [],
-  selectedCountry: "",
+  selectedCountry: null,
 
   playGameSound: false,
   showCountryForm: false,
+  showInvitedPopup: false,
   showChallengePopup: false,
   apodImage: null,
   toast: {

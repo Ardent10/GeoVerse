@@ -5,12 +5,25 @@ import { useAppState } from "@store/index";
 import { Toast } from "@modules/common/components/toast";
 import { motion } from "framer-motion";
 import { GameWrapper } from "../components/challenge/challenge";
+import { InvitedPopup } from "../components/invitedPopup";
+import { useEffect } from "react";
 
 export function Game() {
-  const [state] = useAppState();
+  const [state, dispatch] = useAppState();
 
+  useEffect(() => {
+    if (state?.user?.invited) {
+      dispatch({
+        type: "SET_SHOW_INVITED_POPUP",
+        payload: {
+          showInvitedPopup: true,
+        },
+      });
+    }
+  }, [state?.user?.invited]);
   return (
     <Layout>
+      {state?.showInvitedPopup && <InvitedPopup />}
       {state?.toast?.visible && (
         <Toast message={state?.toast?.message} type={state?.toast.type} />
       )}

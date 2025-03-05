@@ -63,18 +63,18 @@ export default function ChallengeFriendPopup() {
         <div className="p-4 rounded-2xl bg-blue-600 mt-4 w-full flex justify-center">
           {loading ? (
             <PixelLoader variant="bg" />
-          ) : state?.apodImage?.img ? (
-            <div className="flex flex-col text-white items-center justify-center">
-              Nasa APOD
-              <p className="text-sm my-2">{state?.apodImage?.title}</p>
-              <img
-                src={state?.apodImage.img}
-                alt="NASA APOD"
-                className="w-full h-40 rounded-lg shadow-md"
-              />
-            </div>
           ) : (
-            <p>No image available</p>
+            state?.apodImage?.img && (
+              <div className="flex flex-col text-white items-center justify-center">
+                Nasa APOD
+                <p className="text-sm my-2">{state?.apodImage?.title}</p>
+                <img
+                  src={state?.apodImage.img}
+                  alt="NASA APOD"
+                  className="w-full h-40 rounded-lg shadow-md"
+                />
+              </div>
+            )
           )}
         </div>
 

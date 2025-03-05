@@ -45,12 +45,14 @@ export function GameGlobe() {
       })
       // @ts-ignore
       .hexPolygonLabel(
-        ({ properties: d }: { properties: CountryProperties }) => `
-        <div style="background-color: rgba(0,0,0,0.75); color: white; border-radius: 6px; padding: 10px; font-family:Minecraft">
+        ({
+          properties: d,
+        }: {
+          properties: CountryProperties;
+        }) => `<div style="background-color: rgba(0,0,0,0.75); color: white; border-radius: 6px; padding: 10px; font-family:Minecraft">
           <b>${d.ADMIN} (${d.ISO_A2})</b> <br />
           Population: <i>${d.POP_EST.toLocaleString()}</i>
-        </div>
-      `
+        </div>`
       );
 
     globeContainer.style.position = "relative";
@@ -111,9 +113,17 @@ export function GameGlobe() {
     };
   }, []);
 
-  // Handle Country Selection
   useEffect(() => {
     if (!globeRef.current || !state.selectedCountry || !countriesData) return;
+
+    // Ensure the globe instance is fully loaded
+    if (!globeRef.current.scene()) return;
+
+    const world = globeRef.current;
+
+    // Stop auto-rotation before moving to avoid conflicts
+    const controls = world.controls();
+    controls.autoRotate = false;
 
     // Find the selected country
     const countryFeature = countriesData.find(
@@ -122,38 +132,91 @@ export function GameGlobe() {
         state.selectedCountry.toLowerCase()
     );
 
-    if (countryFeature) {
-      // Stop auto-rotation
-      const controls = globeRef.current.controls();
-      controls.autoRotate = false;
+    if (!countryFeature || !countryFeature.geometry) {
+      console.warn("Invalid or missing geometry data for selected country.");
+      return;
+    }
 
-      // Calculate country center and move view
+    try {
       const { geometry } = countryFeature;
-      const centerCoords = geometry.coordinates[0]
-        .reduce(
-          (acc: number[], coord: number[]) => [
-            acc[0] + coord[0],
-            acc[1] + coord[1],
-          ],
-          [0, 0]
-        )
-        .map((sum: number) => sum / geometry.coordinates[0].length);
 
-      globeRef.current.hexPolygonColor((d: any) =>
-        d.properties.ADMIN.toLowerCase() ===
-        state?.selectedCountry?.toLowerCase()
-          ? "#FFD700" // Yellow for selected country
+      // Handle different geometry types properly
+      let polygons = [];
+
+      // First, normalize the data structure based on geometry type
+      if (geometry.type === "Polygon") {
+        polygons = [geometry.coordinates[0]]; // Just the outer ring of the first polygon
+      } else if (geometry.type === "MultiPolygon") {
+        // Get the first coordinate set from each polygon
+        polygons = geometry.coordinates.map((polygon: any) => polygon[0]);
+      } else {
+        console.warn(`Unsupported geometry type: ${geometry.type}`);
+        return;
+      }
+
+      // Find the largest polygon (likely the main landmass)
+      let largestPolygon = polygons[0];
+      let maxSize = 0;
+
+      for (const polygon of polygons) {
+        if (polygon.length > maxSize) {
+          maxSize = polygon.length;
+          largestPolygon = polygon;
+        }
+      }
+
+      // Calculate center point from the largest polygon
+      let sumLng = 0;
+      let sumLat = 0;
+      const validCoords = largestPolygon.filter(
+        (coord: any) =>
+          Array.isArray(coord) &&
+          coord.length >= 2 &&
+          !isNaN(coord[0]) &&
+          !isNaN(coord[1])
+      );
+
+      if (validCoords.length === 0) {
+        console.warn("No valid coordinates found for country");
+        return;
+      }
+
+      for (const coord of validCoords) {
+        sumLng += coord[0];
+        sumLat += coord[1];
+      }
+
+      const centerLng = sumLng / validCoords.length;
+      const centerLat = sumLat / validCoords.length;
+
+      // Validate the calculated coordinates
+      if (isNaN(centerLng) || isNaN(centerLat)) {
+        console.warn(
+          "Invalid center coordinates calculated:",
+          centerLng,
+          centerLat
+        );
+        return;
+      }
+
+      // Apply color change
+      world.hexPolygonColor((d: any) =>
+        d.properties.ADMIN.toLowerCase() === state.selectedCountry.toLowerCase()
+          ? "#FFD700" // Highlight selected country
           : "#1e293b"
       );
-      // Move to country
-      globeRef.current.pointOfView(
+
+      // Smooth transition to selected country with controlled movement
+      world.pointOfView(
         {
-          lat: centerCoords[1],
-          lng: centerCoords[0],
-          altitude: 2,
+          lat: centerLat,
+          lng: centerLng,
+          altitude: 1.5, // Slightly closer view
         },
-        2000
+        1500 // Smooth transition time
       );
+    } catch (error) {
+      console.error("Error in selecting country transition:", error);
     }
   }, [state.selectedCountry, countriesData]);
 

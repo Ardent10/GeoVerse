@@ -31,7 +31,7 @@ function App() {
     };
   }, [state.isMuted]);
 
-  console.log("state=>", state);
+  // console.log("state=>", state);
 
   return (
     <Routes>

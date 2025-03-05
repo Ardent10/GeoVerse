@@ -19,7 +19,6 @@ export function useGame() {
       setError(null);
       const response = await globalApiCallHelper({
         api: "/game/countries",
-        headers: { Authorization: `Bearer ${token}` },
       });
 
       dispatch({ type: "SET_COUNTRIES_LIST", payload: response.countries });
@@ -38,7 +37,6 @@ export function useGame() {
       setError(null);
       const response = await globalApiCallHelper({
         api: `/game/clue/${country}/${clueIndex}`,
-        headers: { Authorization: `Bearer ${token}` },
       });
 
       dispatch({ type: "SET_CLUE", payload: response.clue });
@@ -57,7 +55,6 @@ export function useGame() {
       setError(null);
       const response = await globalApiCallHelper({
         api: `/game/fun-fact/${city}`,
-        headers: { Authorization: `Bearer ${token}` },
       });
 
       dispatch({
@@ -90,7 +87,6 @@ export function useGame() {
       const response = await globalApiCallHelper({
         api: "/game/submit-answer",
         method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
         body: JSON.stringify({
           userId: state?.user?.id || null,
           country,
@@ -167,14 +163,14 @@ export function useGame() {
     if (!token) return;
 
     try {
+      setLoading(true);
+      setError(null);
       const NASA_API_KEY = import.meta.env.VITE_NASA_API_KEY;
       const response = await fetch(
         `https://api.nasa.gov/planetary/apod?api_key=${NASA_API_KEY}`
       );
 
       const data = await response.json();
-
-      console.log("DATA=>", data);
 
       if (data.media_type === "image") {
         dispatch({
@@ -188,7 +184,8 @@ export function useGame() {
         });
       }
     } catch (error) {
-      console.error("Error fetching NASA APOD image:", error);
+      setError("Error fetching NASA APOD image:");
+      showToast("Error fetching NASA APOD image:" + error, "error");
     } finally {
       setLoading(false);
     }

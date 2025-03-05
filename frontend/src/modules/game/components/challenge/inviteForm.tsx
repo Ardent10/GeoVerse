@@ -20,7 +20,6 @@ export function InviteFriendForm() {
   });
 
   function onSubmit(data: inviteFormData) {
-    console.log("INVITE", data);
     challengeFriend(data.username);
     reset();
   }

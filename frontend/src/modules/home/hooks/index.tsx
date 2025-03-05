@@ -60,10 +60,12 @@ export const useAuth = () => {
     username,
     email,
     password,
+    invited,
   }: {
     username?: string;
     email: string;
     password: string;
+    invited: boolean;
   }) => {
     setLoading(true);
 
@@ -71,7 +73,7 @@ export const useAuth = () => {
       const data = await globalApiCallHelper({
         api: "/auth/signup",
         method: "POST",
-        body: JSON.stringify({ username, email, password }),
+        body: JSON.stringify({ username, email, password, invited }),
       });
 
       if (!data || data.error) {

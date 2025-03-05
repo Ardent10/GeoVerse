@@ -94,6 +94,7 @@ const globalReducers = (state: State, action: Action) => {
         guessedCity: initialState.guessedCity,
         guessedCityResult: initialState.guessedCityResult,
         showCountryForm: false,
+        showInvitedPopup: false,
         resetGame: true,
       };
     }
@@ -124,15 +125,22 @@ const globalReducers = (state: State, action: Action) => {
         ...action.payload,
       };
     }
-    
+
     case "SET_SHOW_CHALLENGE_POPUP": {
       return {
         ...state,
         ...action.payload,
       };
     }
-    
+
     case "SET_APOD_IMAGE": {
+      return {
+        ...state,
+        ...action.payload,
+      };
+    }
+
+    case "SET_SHOW_INVITED_POPUP": {
       return {
         ...state,
         ...action.payload,

@@ -2,6 +2,7 @@ import { AuthModal } from "@modules/common/components/authPopup";
 import { Heading } from "@modules/common/components/heading";
 import { Logo } from "@modules/common/components/logo";
 import { UserProfile } from "@modules/common/components/profile";
+import { SoundToggleButton } from "@modules/common/components/sound";
 import { useAppState } from "@store/index";
 import { playSound } from "@utils/playSound";
 import { motion } from "framer-motion";
@@ -49,7 +50,7 @@ export function Navbar() {
             Play Now
           </div>
         </Button>
-
+        {state.playGameSound && <SoundToggleButton />}
         {state?.user?.id && <UserProfile />}
       </div>
     </div>
