@@ -18,6 +18,8 @@ interface AuthResponse {
   score: number;
   correctAnswer: number;
   incorrectAnswer: number;
+  invitedByUserScore?: number;
+  challenges?: { invitedBy: string; accepted: boolean }[];
 }
 
 const generateToken = (id: string): string => {
@@ -30,7 +32,43 @@ const register = async (
   password: string,
   invited: boolean
 ): Promise<AuthResponse> => {
-  const userExists = await User.findOne({ email });
+  if (invited) {
+    const invitedUser = await User.findOne({ username, invited: true });
+
+    if (!invitedUser) {
+      throw new Error("No pending invitation found for this user");
+    }
+
+    const inviteeUser = await User.findOne({ username: invitedUser.username });
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    invitedUser.email = email;
+    invitedUser.password = hashedPassword;
+    invitedUser.challenges.forEach((challenge) => {
+      challenge.accepted = true;
+    });
+
+    await invitedUser.save();
+
+    return {
+      user: {
+        id: invitedUser.id,
+        username: invitedUser.username,
+        email: invitedUser.email,
+        invited: invitedUser.invited,
+        token: generateToken(invitedUser.id),
+      },
+      score: invitedUser.score,
+      correctAnswer: invitedUser.correct,
+      incorrectAnswer: invitedUser.incorrect,
+      invitedByUserScore: inviteeUser?.score,
+    };
+  }
+
+  // Regular registration process for non-invited users
+  const userExists = await User.findOne({ username });
 
   if (userExists) {
     throw new Error("User already exists");
@@ -44,7 +82,7 @@ const register = async (
     email,
     password: hashedPassword,
     score: 0,
-    invited,
+    invited: false, // Not an invited user
   });
 
   if (!userData) {
@@ -56,7 +94,7 @@ const register = async (
       id: userData.id,
       username: userData.username,
       email: userData.email,
-      invited: userData.invited,
+      invited: false,
       token: generateToken(userData.id),
     },
     score: userData.score,
