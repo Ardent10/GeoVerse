@@ -19,7 +19,7 @@ function CountryForm() {
     control,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<{ country: string }>({
     resolver: zodResolver(countryFormSchema),
   });
@@ -66,7 +66,7 @@ function CountryForm() {
               type="submit"
               children="Select"
               borderColor="white"
-              disabled={state?.selectedCountry}
+              disabled={!isValid}
               className="px-4 py-1 btn-hover bg-yellow-500 shadow-lg transition transform hover:scale-110 hover:bg-yellow-400"
             />
           </div>

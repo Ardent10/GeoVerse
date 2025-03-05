@@ -22,6 +22,8 @@ export const initialState = {
 
   playGameSound: false,
   showCountryForm: false,
+  showChallengePopup: false,
+  apodImage: null,
   toast: {
     visible: false,
     message: "",

@@ -60,7 +60,7 @@ export function InviteFriendForm() {
             borderColor="white"
             disabled={!isValid}
             loading={loading}
-            className="flex items-center gap-2 px-4 py-1 btn-hover  shadow-lg transition transform hover:scale-110 hover:bg-yellow-400"
+            className="flex items-center gap-2 px-4 py-1 bg-yellow-400  shadow-lg transition transform hover:scale-110 hover:bg-yellow-400"
           >
             <img
               src="/assets/common/share1.png"

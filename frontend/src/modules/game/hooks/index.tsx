@@ -12,11 +12,14 @@ export function useGame() {
   };
 
   const getAllCountries = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
     try {
       setLoading(true);
       setError(null);
       const response = await globalApiCallHelper({
         api: "/game/countries",
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       dispatch({ type: "SET_COUNTRIES_LIST", payload: response.countries });
@@ -28,11 +31,14 @@ export function useGame() {
   };
 
   const getCluesByCountry = async (country: string, clueIndex: number) => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
     try {
       setLoading(true);
       setError(null);
       const response = await globalApiCallHelper({
         api: `/game/clue/${country}/${clueIndex}`,
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       dispatch({ type: "SET_CLUE", payload: response.clue });
@@ -44,11 +50,14 @@ export function useGame() {
   };
 
   const fetchFunFact = async (city: string) => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
     try {
       setLoading(true);
       setError(null);
       const response = await globalApiCallHelper({
         api: `/game/fun-fact/${city}`,
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       dispatch({
@@ -72,6 +81,8 @@ export function useGame() {
     country: string,
     cluesUsed: number
   ) => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
     try {
       setLoading(true);
       setError(null);
@@ -79,6 +90,7 @@ export function useGame() {
       const response = await globalApiCallHelper({
         api: "/game/submit-answer",
         method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
         body: JSON.stringify({
           userId: state?.user?.id || null,
           country,
@@ -149,6 +161,39 @@ export function useGame() {
     }
   };
 
+  // Fetch picture of the day using NASA API
+  async function fetchApodImage() {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    try {
+      const NASA_API_KEY = import.meta.env.VITE_NASA_API_KEY;
+      const response = await fetch(
+        `https://api.nasa.gov/planetary/apod?api_key=${NASA_API_KEY}`
+      );
+
+      const data = await response.json();
+
+      console.log("DATA=>", data);
+
+      if (data.media_type === "image") {
+        dispatch({
+          type: "SET_APOD_IMAGE",
+          payload: {
+            apodImage: {
+              img: data?.hdurl,
+              title: data.title,
+            },
+          },
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching NASA APOD image:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return {
     state,
     loading,
@@ -158,5 +203,6 @@ export function useGame() {
     submitGuess,
     getAllCountries,
     challengeFriend,
+    fetchApodImage,
   };
 }
