@@ -25,7 +25,14 @@ export default function ChallengeFriendPopup() {
 
   function copyToClipboard() {
     navigator.clipboard.writeText(inviteLink);
-    alert("Link copied to clipboard!");
+    dispatch({
+      type: "SET_TOAST",
+      payload: {
+        visible: true,
+        message: "Link copied to clipboard!",
+        type: "success",
+      },
+    });
   }
 
   function shareOnWhatsApp() {

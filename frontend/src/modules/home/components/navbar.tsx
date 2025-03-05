@@ -18,30 +18,32 @@ export function Navbar() {
     playSound("/sounds/game.mp3", state?.isMuted && state?.playGameSound);
   }, [state?.playGameSound, state?.isMuted]);
 
+  function handlePlay() {
+    dispatch({
+      type: "SET_PLAY_GAME_SOUND",
+      payload: { playGameSound: true },
+    });
+    !state?.user?.id ? setIsAuthOpen(true) : navigate("/game");
+  }
+
   return (
     <div className="w-full mt-8 flex justify-between items-center px-4 md:px-10">
       <AuthModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
       <Logo className="h-14 w-14 md:h-20 md:w-20 z-10" />
-      <Heading className="text-4xl md:text-7xl font-bold drop-shadow-lg  text-yellow-400 heading" />
+      <Heading className="text-3xl md:text-5xl lg:text-7xl font-bold drop-shadow-lg  text-yellow-400 heading" />
       <div className="flex gap-2 items-center">
         <Button
           borderColor="#ffff"
-          className="px-3  md:px-4 py-1 text-lg font-bold bg-yellow-500 border-4 shadow-lg transition transform hover:scale-105 hover:bg-yellow-400 hover:text-white flex items-center justify-center"
-          onClick={() => {
-            dispatch({
-              type: "SET_PLAY_GAME_SOUND",
-              payload: { playGameSound: true },
-            });
-            !state?.user?.id ? setIsAuthOpen(true) : navigate("/game");
-          }}
+          className="px-0  md:px-4 py-1 text-lg font-bold bg-yellow-500 border-4 shadow-lg transition transform hover:scale-105 hover:bg-yellow-400 hover:text-white flex items-center justify-center"
+          onClick={handlePlay}
         >
           <span className="block md:hidden">
-            <img src="/assets/common/play.png" className="h-3 w-3" alt="play" />
+            <img src="/assets/common/play.png" className="h-5 w-8" alt="play" />
           </span>
           <div className="items-center gap-1 hidden md:flex">
             <img
               src="/assets/common/play1.png"
-              className="h-5 w-5"
+              className="md:h-5 md:w-5"
               alt="play"
             />
             Play Now

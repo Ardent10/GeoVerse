@@ -28,16 +28,15 @@ function AuthForm({ onClose, setShowAuthForm }: AuthModalProps) {
   });
 
   async function onSubmit(data: AuthFormData) {
-    console.log("data=>", data);
-    // if (isSignUp) {
-    //   await signup({
-    //     username: data?.username,
-    //     email: data.email,
-    //     password: data.password,
-    //   });
-    // } else {
-    //   await login({ email: data.email, password: data.password });
-    // }
+    if (isSignUp) {
+      await signup({
+        username: data?.username,
+        email: data.email,
+        password: data.password,
+      });
+    } else {
+      await login({ email: data.email, password: data.password });
+    }
     onClose();
   }
 

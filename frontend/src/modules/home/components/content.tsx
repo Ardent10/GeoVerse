@@ -27,7 +27,7 @@ export function HeroContent() {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
-          className="text-3xl md:text-5xl lg:text-6xl font-bold drop-shadow-lg heading"
+          className="text-2xl md:text-5xl lg:text-6xl font-bold drop-shadow-lg heading"
         >
           A World of Mystery and Adventure Awaits!
         </motion.h1>
@@ -36,7 +36,7 @@ export function HeroContent() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 1 }}
-          className="mt-6 text-sm md:text-xl max-w-lg text-gray-100 bg-black/50 p-3 rounded-lg"
+          className="mt-6 text-xs md:text-xl max-w-lg text-gray-100 bg-black/50 p-3 rounded-lg"
         >
           Solve clues, explore new lands, and challenge your friends in the
           ultimate travel guessing game!
@@ -46,11 +46,11 @@ export function HeroContent() {
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ delay: 1, duration: 0.5 }}
-          className="mt-8 flex items-center"
+          className="mt-8 flex flex-col md:flex-row items-center"
         >
           <Button
             borderColor="#ffff"
-            className="flex items-center gap-2 px-4 py-2 text-md font-bold tracking-wide btn-hover bg-yellow-500 shadow-lg transition transform hover:scale-110 hover:bg-yellow-400"
+            className="flex items-center gap-2 px-4 py-2 mb-4 text-sm md:text-md font-bold tracking-wide btn-hover bg-yellow-500 shadow-lg transition transform hover:scale-110 hover:bg-yellow-400"
             onClick={() => {
               dispatch({
                 type: "SET_PLAY_GAME_SOUND",
@@ -68,7 +68,7 @@ export function HeroContent() {
           </Button>
           <Button
             borderColor="#ffff"
-            className="px-4 py-2 text-md font-bold tracking-wide btn-hover bg-yellow-500 shadow-lg transition transform hover:scale-110 hover:bg-yellow-400"
+            className="px-4 py-2 text-sm md:text-md font-bold tracking-wide btn-hover bg-yellow-500 shadow-lg transition transform hover:scale-110 hover:bg-yellow-400"
             onClick={() =>
               window.open("https://github.com/Ardent10/GeoVerse", "_blank")
             }
