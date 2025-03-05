@@ -8,6 +8,10 @@ export interface IUser extends Document {
   correct: number;
   incorrect: number;
   invited: boolean;
+  challenges: [{
+    invitedBy: string;
+    accepted: boolean;
+  }];
 }
 
 const UserSchema: Schema<IUser> = new mongoose.Schema(
@@ -19,7 +23,7 @@ const UserSchema: Schema<IUser> = new mongoose.Schema(
     },
     email: {
       type: String,
-      required: true,
+      required: false,
       unique: true,
     },
     invited: {
@@ -30,6 +34,7 @@ const UserSchema: Schema<IUser> = new mongoose.Schema(
     score: {
       type: Number,
       required: false,
+      default:0
     },
     correct: {
       type: Number,
@@ -43,8 +48,14 @@ const UserSchema: Schema<IUser> = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: true,
+      required: false,
     },
+    challenges: [
+      {
+        invitedBy: { type: String, required: true },
+        accepted: { type: Boolean, default: false },
+      },
+    ],
   },
   { timestamps: true }
 );

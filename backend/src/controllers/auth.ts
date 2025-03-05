@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import authService from "../services/auth";
-import { IUser } from "../models/user";
+import User, { IUser } from "../models/user";
 
 interface AuthenticatedRequest extends Request {
   user?: IUser;
@@ -60,4 +60,52 @@ export const getUserProfile = async (
     correctAnswer: req.user.correct,
     incorrectAnswer: req.user.incorrect,
   });
+};
+
+export const challengeFriend = async (
+  req: AuthenticatedRequest,
+  res: Response
+) => {
+  try {
+
+    const { invitedUsername } = req.body;
+    
+    if (!req.user) {
+      res.status(401).json({ message: "Unauthorized" });
+      return;
+    }
+
+    const response = await authService.sendChallenge(
+      req.user.username,
+      invitedUsername
+    );
+
+    res.json(response);
+  
+  } catch (error) {
+    res.status(400).json({ message: (error as Error).message });
+  }
+};
+
+export const acceptChallenge = async (
+  req: AuthenticatedRequest,
+  res: Response
+) => {
+  try {
+    const { inviterUsername } = req.body;
+
+    if (!req.user) {
+      res.status(401).json({ message: "Unauthorized" });
+      return;
+    }
+
+    const response = await authService.acceptChallenge(
+      req.user.username,
+      inviterUsername
+    );
+
+    res.json(response);
+  } catch (error) {
+    res.status(400).json({ message: (error as Error).message });
+  }
 };

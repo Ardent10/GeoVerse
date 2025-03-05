@@ -95,4 +95,61 @@ const login = async (
   };
 };
 
-export default { register, login };
+export const sendChallenge = async (
+  invitingUsername: string,
+  invitedUsername: string
+) => {
+  if (!invitingUsername || !invitedUsername) {
+    throw new Error("Invalid request");
+  }
+
+  let invitedUser = await User.findOne({ username: invitedUsername });
+
+  // If the invited user does not exist, create a new profile
+  if (!invitedUser) {
+    invitedUser = new User({
+      username: invitedUsername,
+      score: 0,
+      challenges: [],
+      invited: true, // Mark as an invited user
+    });
+    await invitedUser.save();
+  }
+
+  // Add challenge entry for tracking
+  invitedUser.challenges.push({ invitedBy: invitingUsername, accepted: false });
+  await invitedUser.save();
+
+  const inviteLink = `https://yourgame.com/join?invitedBy=${invitingUsername}`;
+
+  return { message: "Invite sent", inviteLink };
+};
+
+export const acceptChallenge = async (
+  acceptingUsername: string,
+  inviterUsername: string
+) => {
+  if (!inviterUsername || !acceptingUsername) {
+    throw new Error("Invalid request");
+  }
+
+  const acceptingUser = await User.findOne({ username: acceptingUsername });
+  const inviter = await User.findOne({ username: inviterUsername });
+
+  if (!inviter || !acceptingUser) {
+    throw new Error("User not found");
+  }
+
+  const challengeIndex = acceptingUser.challenges.findIndex(
+    (c) => c.invitedBy === inviterUsername
+  );
+
+  if (challengeIndex !== -1) {
+    acceptingUser.challenges[challengeIndex].accepted = true;
+    await acceptingUser.save();
+  }
+
+  return { message: "Challenge accepted!" };
+};
+
+export default { register, login, sendChallenge, acceptChallenge };
