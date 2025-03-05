@@ -2,6 +2,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import User, { IUser } from "../models/user";
+import { AuthRequest } from "../middleware/auth";
 
 dotenv.config();
 
@@ -14,11 +15,12 @@ interface AuthResponse {
     email: string;
     token: string;
     invited: boolean;
+    invitedBy?: string;
+    inviterScore?: number;
   };
   score: number;
   correctAnswer: number;
   incorrectAnswer: number;
-  invitedByUserScore?: number;
   challenges?: { invitedBy: string; accepted: boolean }[];
 }
 
@@ -39,11 +41,10 @@ const register = async (
       throw new Error("No pending invitation found for this user");
     }
 
-    const inviteeUser = await User.findOne({ username: invitedUser.username });
-
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
+    // Complete invited user signup
     invitedUser.email = email;
     invitedUser.password = hashedPassword;
     invitedUser.challenges.forEach((challenge) => {
@@ -57,17 +58,18 @@ const register = async (
         id: invitedUser.id,
         username: invitedUser.username,
         email: invitedUser.email,
-        invited: invitedUser.invited,
+        invited: true,
         token: generateToken(invitedUser.id),
+        invitedBy: invitedUser.challenges[0]?.invitedBy ?? null,
+        inviterScore: invitedUser.score ?? 0,
       },
       score: invitedUser.score,
       correctAnswer: invitedUser.correct,
       incorrectAnswer: invitedUser.incorrect,
-      invitedByUserScore: inviteeUser?.score,
     };
   }
 
-  // Regular registration process for non-invited users
+  // Regular registration process for new users
   const userExists = await User.findOne({ username });
 
   if (userExists) {
@@ -77,7 +79,7 @@ const register = async (
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
 
-  const userData: IUser = await User.create({
+  const newUser: IUser = await User.create({
     username,
     email,
     password: hashedPassword,
@@ -85,21 +87,21 @@ const register = async (
     invited: false, // Not an invited user
   });
 
-  if (!userData) {
+  if (!newUser) {
     throw new Error("Invalid user data");
   }
 
   return {
     user: {
-      id: userData.id,
-      username: userData.username,
-      email: userData.email,
+      id: newUser.id,
+      username: newUser.username,
+      email: newUser.email,
       invited: false,
-      token: generateToken(userData.id),
+      token: generateToken(newUser.id),
     },
-    score: userData.score,
-    correctAnswer: userData.correct,
-    incorrectAnswer: userData.incorrect,
+    score: newUser.score,
+    correctAnswer: newUser.correct,
+    incorrectAnswer: newUser.incorrect,
   };
 };
 
@@ -114,9 +116,17 @@ const login = async (
   }
 
   const isMatch = await bcrypt.compare(password, user.password);
-
   if (!isMatch) {
     throw new Error("Invalid email or password");
+  }
+
+  let inviterUser = null;
+
+  // If the user was invited, fetch inviter details
+  if (user.invited && user.challenges?.length > 0) {
+    inviterUser = await User.findOne({
+      username: user.challenges[0].invitedBy,
+    }).select("username score");
   }
 
   return {
@@ -125,6 +135,8 @@ const login = async (
       username: user.username,
       email: user.email,
       invited: user.invited,
+      invitedBy: inviterUser?.username,
+      inviterScore: inviterUser?.score,
       token: generateToken(user.id),
     },
     score: user.score,
@@ -133,7 +145,7 @@ const login = async (
   };
 };
 
-export const sendChallenge = async (
+const sendChallenge = async (
   invitingUsername: string,
   invitedUsername: string
 ) => {
@@ -163,7 +175,7 @@ export const sendChallenge = async (
   return { message: "Invite sent", inviteLink };
 };
 
-export const acceptChallenge = async (
+const acceptChallenge = async (
   acceptingUsername: string,
   inviterUsername: string
 ) => {
@@ -190,4 +202,39 @@ export const acceptChallenge = async (
   return { message: "Challenge accepted!" };
 };
 
-export default { register, login, sendChallenge, acceptChallenge };
+export const getUserProfile = async (req: AuthRequest) => {
+  if (!req.user) {
+    throw new Error("Unauthorized");
+  }
+
+  let inviterUser = null;
+
+  // Check if the user was invited and fetch inviter details
+  if (req.user.invited && req.user.challenges?.length > 0) {
+    inviterUser = await User.findOne({
+      username: req.user.challenges[0].invitedBy,
+    }).select("username score");
+  }
+
+  return {
+    user: {
+      id: req.user._id,
+      username: req.user.username,
+      email: req.user.email,
+      invited: req.user.invited,
+      invitedBy: inviterUser ? inviterUser.username : null,
+      inviterScore: inviterUser ? inviterUser.score : null,
+    },
+    score: req.user.score,
+    correctAnswer: req.user.correct,
+    incorrectAnswer: req.user.incorrect,
+  };
+};
+
+export default {
+  register,
+  login,
+  sendChallenge,
+  acceptChallenge,
+  getUserProfile,
+};

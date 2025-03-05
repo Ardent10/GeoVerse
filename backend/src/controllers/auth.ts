@@ -45,21 +45,12 @@ export const getUserProfile = async (
   req: AuthenticatedRequest,
   res: Response
 ): Promise<void> => {
-  if (!req.user) {
-    res.status(401).json({ message: "Unauthorized" });
-    return;
+  try {
+    const userProfile = await authService.getUserProfile(req);
+    res.json(userProfile);
+  } catch (error) {
+    res.status(401).json({ message: (error as Error).message });
   }
-  res.json({
-    user: {
-      id: req.user._id,
-      username: req.user.username,
-      email: req.user.email,
-      invited: req.user.invited,
-    },
-    score: req.user.score,
-    correctAnswer: req.user.correct,
-    incorrectAnswer: req.user.incorrect,
-  });
 };
 
 export const challengeFriend = async (
@@ -67,9 +58,8 @@ export const challengeFriend = async (
   res: Response
 ) => {
   try {
-
     const { invitedUsername } = req.body;
-    
+
     if (!req.user) {
       res.status(401).json({ message: "Unauthorized" });
       return;
@@ -81,9 +71,8 @@ export const challengeFriend = async (
     );
 
     res.json(response);
-  
   } catch (error) {
-    res.status(400).json({ message: (error as Error).message });
+    res.status(401).json({ message: (error as Error).message });
   }
 };
 
