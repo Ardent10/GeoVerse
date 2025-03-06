@@ -6,7 +6,7 @@ import { Home } from "@modules/home/page";
 import { useAuth } from "@modules/home/hooks";
 
 function App() {
-  const [state] = useAppState();
+  const [state, dispatch] = useAppState();
   const { fetchUser } = useAuth();
 
   useEffect(() => {
@@ -32,6 +32,27 @@ function App() {
   }, [state.isMuted]);
 
   // console.log("state=>", state);
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const isInvite = searchParams.get("invite") === "true";
+    const invitedBy = searchParams.get("invitedBy");
+    const inviterScore = searchParams.get("inviterScore");
+
+    if (isInvite && invitedBy && inviterScore) {
+      dispatch({
+        type: "SET_SHOW_INVITED_POPUP",
+        payload: {
+          user: {
+            ...state.user,
+            invitedBy,
+            inviterScore: parseInt(inviterScore, 10),
+          },
+          showInvitedPopup: true,
+        },
+      });
+    }
+  }, [location.search, dispatch]);
 
   return (
     <Routes>

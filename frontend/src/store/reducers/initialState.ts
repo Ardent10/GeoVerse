@@ -5,6 +5,7 @@ export const initialState = {
     email: null,
     token: null,
     invitedBy: null,
+    inviterScore: null,
   },
   isLoading: false,
   guessedCity: null,

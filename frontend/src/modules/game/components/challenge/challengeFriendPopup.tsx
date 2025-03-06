@@ -36,7 +36,7 @@ export default function ChallengeFriendPopup() {
   }
 
   function shareOnWhatsApp() {
-    const message = `🚀 ${state?.user?.username} scored ${state?.score} points! Can you beat them? Play now: ${inviteLink}`;
+    const message = `GeoVerse Alert! \n${state?.user?.username} just scored ${state?.score} points! Think you can beat them? Test your geography skills now! \nPlay here 👉 ${inviteLink}`;
     const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, "_blank");
   }
@@ -78,33 +78,41 @@ export default function ChallengeFriendPopup() {
           )}
         </div>
 
-        <div className="flex items-center justify-center mt-4">
-          <PixelButton
-            onClick={copyToClipboard}
-            className="p-2 bg-gray-700 text-white rounded-md hover:bg-gray-800 transition"
-            children="Copy Invite Link"
-          />
+        <div className="flex justify-between mt-4 w-full">
+          <div className="flex ">
+            <PixelButton
+              onClick={copyToClipboard}
+              className="flex md:gap-2 items-center p-2 bg-yellow-400 text-white rounded-md hover:bg-yellow-500 transition"
+            >
+              <img src="/assets/common/link.png" className="h-4 w-4" alt="" />
+            </PixelButton>
+
+            <PixelButton
+              onClick={shareOnWhatsApp}
+              className="flex md:gap-2 items-center p-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition"
+            >
+              <img
+                src="/assets/common/whatsapp.webp"
+                className="h-6 w-6"
+                alt=""
+              />
+            </PixelButton>
+          </div>
 
           <PixelButton
-            onClick={shareOnWhatsApp}
-            className="p-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition"
-            children="Share on WhatsApp"
-          />
+            onClick={() =>
+              dispatch({
+                type: "SET_SHOW_CHALLENGE_POPUP",
+                payload: {
+                  showChallengePopup: false,
+                },
+              })
+            }
+            className=" bg-red-500 hover:bg-red-600 text-white"
+          >
+            Close
+          </PixelButton>
         </div>
-
-        <PixelButton
-          onClick={() =>
-            dispatch({
-              type: "SET_SHOW_CHALLENGE_POPUP",
-              payload: {
-                showChallengePopup: false,
-              },
-            })
-          }
-          className="mt-4 bg-red-500 hover:bg-red-600 text-white"
-        >
-          Close
-        </PixelButton>
       </div>
     </PixelPopup>
   );
