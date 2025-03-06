@@ -13,9 +13,9 @@ export default function ChallengeFriendPopup() {
 
   useEffect(() => {
     const baseUrl = window.location.origin;
-    const uniqueLink = `${baseUrl}/invite?user=${encodeURIComponent(
+    const uniqueLink = `${baseUrl}?invite=true?invitedBy=${encodeURIComponent(
       state?.user?.username
-    )}&score=${state?.score}`;
+    )}&inviterScore=${state?.score}`;
     setInviteLink(uniqueLink);
   }, [state?.user?.username, state?.score]);
 
