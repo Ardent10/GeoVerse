@@ -4,7 +4,6 @@ import { Heading } from "./heading";
 import { Logo } from "./logo";
 import { SoundToggleButton } from "./sound";
 import { UserProfile } from "./profile";
-import { Share } from "./share";
 import { Score } from "./score";
 import { HowToPlay } from "./howToPlay";
 
