@@ -13,7 +13,7 @@ GeoVerse is an interactive travel guessing game where players receive cryptic cl
 ✅ **Instant Feedback**:  
    - 🎉 **Correct Answer** → Confetti animation + Fun Fact.  
    - 😢 **Incorrect Answer** → Sad-face animation + a hint for the next round.  
-✅ **Dynamic Globe** 🌍: Interactive 3D globe rendering using `react-globe.gl` to show guessed locations.  
+✅ **Dynamic Globe** 🌍: Interactive 3D globe rendering using `globe.gl` to show guessed locations.  
 ✅ **Score Tracking**: Users can track their correct and incorrect answers.  
 ✅ **Challenge a Friend**: Invite friends via a shareable link. The invited friend can see your score before playing.  
 ✅ **Authentication**: Users can **Sign Up / Log In** to save progress.  
