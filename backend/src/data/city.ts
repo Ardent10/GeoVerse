@@ -127,7 +127,7 @@ export const cities = [
   },
   {
     city: "Los Angeles",
-    country: "USA",
+    country: "United States of America",
     latitude: 34.0522,
     longitude: -118.2437,
     clues: [
@@ -469,7 +469,7 @@ export const cities = [
   },
   {
     city: "San Francisco",
-    country: "USA",
+    country: "United States of America",
     latitude: 37.7749,
     longitude: -122.4194,
     clues: [
@@ -811,7 +811,7 @@ export const cities = [
   },
   {
     city: "Honolulu",
-    country: "USA",
+    country: "United States of America",
     latitude: 21.3069,
     longitude: -157.8583,
     clues: [
