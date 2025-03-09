@@ -58,6 +58,44 @@ The app will be available at **`http://localhost:5173`**.
 
 ---
 
+## 🔐 **Environment Setup**
+
+### Frontend Environment Variables (.env)
+Create a `.env` file in the frontend root directory with these variables:
+```
+VITE_BASE_URL=http://localhost:5000 # or your backend URL
+VITE_NASA_API_KEY=your_nasa_api_key # for satellite imagery
+```
+
+### Backend Environment Variables (.env)
+Create a `.env` file in the backend root directory with these variables:
+```
+MONGODB_URI=mongodb://localhost:27017/geoverse # or your MongoDB connection string
+DB_NAME=geoverse # your database name
+PORT=5000 # port for your backend server
+JWT_SECRET=your_secure_random_string # secret for JWT token generation
+```
+
+### 🔑 **Getting API Keys**
+
+1. **NASA API Key**: 
+   - Visit [NASA API Portal](https://api.nasa.gov/)
+   - Complete the form to get your API key
+   - Add the key to your frontend .env file
+
+2. **MongoDB Setup**:
+   - Use a local MongoDB instance or 
+   - Create a free cluster at [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
+   - Get your connection string and add it to the backend .env file
+
+### ⚠️ **Important Notes**
+
+- **Never commit .env files to your repository**
+- Add `.env` and `.env.local` to your `.gitignore` file
+- For production, set these environment variables in your hosting platform
+
+---
+
 ## 🔗 **API Endpoints**  
 
 ### 🔑 **Auth Routes**
