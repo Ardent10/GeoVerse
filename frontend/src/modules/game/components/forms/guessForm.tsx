@@ -7,7 +7,7 @@ import { guessForm, GuessFormData } from "@utils/validations";
 import { useAppState } from "@store/index";
 import { useGame } from "@modules/game/hooks";
 import { useState } from "react";
-import ResultPopup from "../resultPopup";
+import ResultPopup from "../popup/resultPopup";
 import ConfettiBoom from "react-confetti-boom";
 
 function GuessForm() {
@@ -20,39 +20,10 @@ function GuessForm() {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors , isValid},
   } = useForm({
     resolver: zodResolver(guessForm),
   });
-
-  // const handleGuess = (data: { guess: string }) => {
-  //   const cityData = cities.find(
-  //     (city) =>
-  //       city.city.toLowerCase() === data.guess.toLowerCase() ||
-  //       city.country.toLowerCase() === data.guess.toLocaleLowerCase()
-  //   );
-
-  //   if (cityData) {
-  //     dispatch({ type: "setScore", payload: state.score + 1 });
-  //     dispatch({
-  //       type: "addGuess",
-  //       payload: { city: cityData, correct: true },
-  //     });
-
-  //     // ✅ Move the globe to guessed location
-  //     if (state.globeInstance) {
-  //       state.globeInstance.pointOfView(
-  //         { lat: cityData.latitude, lng: cityData.longitude, altitude: 1.5 },
-  //         2000
-  //       );
-  //     }
-  //   } else {
-  //     dispatch({
-  //       type: "addGuess",
-  //       payload: { city: data.guess, correct: false },
-  //     });
-  //   }
-  // };
 
   const handleFormSubmit = async (data: GuessFormData) => {
     dispatch({
@@ -114,7 +85,7 @@ function GuessForm() {
           type="submit"
           children="Guess"
           borderColor="white"
-          disabled={!state?.selectedCountry}
+          disabled={!state?.selectedCountry || !isValid}
           className="px-3 py-1 text-sm font-bold tracking-wide btn-hover bg-yellow-500 shadow-lg transition transform hover:scale-105 hover:bg-yellow-400"
         />
       </form>

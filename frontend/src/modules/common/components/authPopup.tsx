@@ -109,12 +109,13 @@ function AuthForm({ onClose, setShowAuthForm }: AuthModalProps) {
       )}
 
       <PixelButton
+        loading={loading}
+        disabled={loading}
         className="px-4 py-2 text-md font-bold tracking-wide btn-hover bg-yellow-500 shadow-lg transition transform hover:scale-110 hover:bg-yellow-400"
         type="submit"
         children={isSignUp ? "Sign Up" : "Login"}
       />
 
-      {/* Toggle Between Login and Signup */}
       <p className="text-center text-sm">
         {isSignUp ? "Already have an account?" : "Don't have an account?"}
         <span
@@ -138,10 +139,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   const navigate = useNavigate();
   const [showAuthForm, setShowAuthForm] = useState(false);
 
-  const {
-    reset,
-    formState: { errors },
-  } = useForm({
+  const { reset } = useForm({
     resolver: zodResolver(authSchema),
   });
 

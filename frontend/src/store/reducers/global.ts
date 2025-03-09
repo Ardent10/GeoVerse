@@ -86,6 +86,18 @@ const globalReducers = (state: State, action: Action) => {
       };
     }
 
+    case "NEXT_GAME": {
+      return {
+        ...state,
+        selectedCountry: initialState.selectedCountry,
+        clues: initialState.clues,
+        guessedCity: initialState.guessedCity,
+        guessedCityResult: initialState.guessedCityResult,
+        showCountryForm: true,
+        showInvitedPopup: false,
+        resetGame: true,
+      };
+    }
     case "RESET_GAME": {
       return {
         ...state,

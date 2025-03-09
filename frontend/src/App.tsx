@@ -31,7 +31,6 @@ function App() {
     };
   }, [state.isMuted]);
 
-  // console.log("state=>", state);
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);

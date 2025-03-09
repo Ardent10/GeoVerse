@@ -3,8 +3,8 @@ import CountryForm from "./forms/countryForm";
 import { useAppState } from "@store/index";
 import { PixelButton } from "@modules/common/components/button";
 import { useState } from "react";
-import { QuitPopup } from "./quitGamePopup";
-import { InviteFriendForm } from "./challenge/inviteForm";
+import { QuitPopup } from "./popup/quitGamePopup";
+
 
 export function FormWrapper() {
   const [state] = useAppState();

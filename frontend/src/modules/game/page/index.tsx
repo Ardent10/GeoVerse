@@ -5,7 +5,7 @@ import { useAppState } from "@store/index";
 import { Toast } from "@modules/common/components/toast";
 import { motion } from "framer-motion";
 import { GameWrapper } from "../components/challenge/challenge";
-import { InvitedPopup } from "../components/invitedPopup";
+import { InvitedPopup } from "../components/popup/invitedPopup";
 import { useEffect } from "react";
 
 export function Game() {
