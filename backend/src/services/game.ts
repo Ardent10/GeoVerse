@@ -1,6 +1,9 @@
 import { cities } from "../data/city";
 import User from "../models/user";
 
+// In memory score for guest users
+let GUEST_SCORE = { score: 0, correctAnswer: 0, incorrectAnswer: 0 };
+
 const getAllCountries = () => {
   return [...new Set(cities.map((city) => city.country).sort())];
 };
@@ -20,7 +23,50 @@ const getClue = (country: string, clueIndex: number) => {
   return { clue: cityData?.clues[clueIndex] };
 };
 
-let guestScore = { score: 0, correctAnswer: 0, incorrectAnswer: 0 };
+// const validateAnswer = async (
+//   userId: string | null,
+//   country: string,
+//   answer: string,
+//   cluesUsed: number
+// ) => {
+//   let user = null;
+
+//   if (userId) {
+//     user = await User.findById(userId);
+//   }
+
+//   const cityData = getCityByCountry(country);
+//   if (!cityData) return { correct: false, message: "Destination not found" };
+
+//   const isCorrect = cityData.city.toLowerCase() === answer.toLowerCase();
+//   const scorePenalty = isCorrect ? Math.max(0, (cluesUsed - 1) * -5) : 0;
+//   const scoreChange = isCorrect ? 10 + scorePenalty : -5;
+
+//   if (user) {
+//     // Update user stats in database
+//     user.score = (user.score || 0) + scoreChange;
+//     user.correct = (user.correct || 0) + (isCorrect ? 1 : 0);
+//     user.incorrect = (user.incorrect || 0) + (isCorrect ? 0 : 1);
+//     await user.save();
+//   } else {
+//     // Update guest user stats in memory
+//     guestScore.score += scoreChange;
+//     guestScore.correctAnswer += isCorrect ? 1 : 0;
+//     guestScore.incorrectAnswer += isCorrect ? 0 : 1;
+//   }
+
+//   return {
+//     correct: isCorrect,
+//     message: isCorrect ? "🎉 Correct!" : "😢 Incorrect!",
+//     newScore: user
+//       ? {
+//           score: user.score,
+//           correctAnswer: user.correct,
+//           incorrectAnswer: user.incorrect,
+//         }
+//       : guestScore,
+//   };
+// };
 
 const validateAnswer = async (
   userId: string | null,
@@ -38,8 +84,15 @@ const validateAnswer = async (
   if (!cityData) return { correct: false, message: "Destination not found" };
 
   const isCorrect = cityData.city.toLowerCase() === answer.toLowerCase();
-  const scorePenalty = isCorrect ? Math.max(0, (cluesUsed - 1) * -5) : 0;
-  const scoreChange = isCorrect ? 10 + scorePenalty : -5;
+
+  // Determine score based on correctness and clues used
+  let scoreChange = 0;
+
+  if (isCorrect) {
+    scoreChange = cluesUsed === 1 ? 10 : 5;
+  } else {
+    scoreChange = -5;
+  }
 
   if (user) {
     // Update user stats in database
@@ -49,9 +102,9 @@ const validateAnswer = async (
     await user.save();
   } else {
     // Update guest user stats in memory
-    guestScore.score += scoreChange;
-    guestScore.correctAnswer += isCorrect ? 1 : 0;
-    guestScore.incorrectAnswer += isCorrect ? 0 : 1;
+    GUEST_SCORE.score += scoreChange;
+    GUEST_SCORE.correctAnswer += isCorrect ? 1 : 0;
+    GUEST_SCORE.incorrectAnswer += isCorrect ? 0 : 1;
   }
 
   return {
@@ -63,7 +116,7 @@ const validateAnswer = async (
           correctAnswer: user.correct,
           incorrectAnswer: user.incorrect,
         }
-      : guestScore,
+      : GUEST_SCORE,
   };
 };
 
